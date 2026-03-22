@@ -3,11 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const contentArea = document.getElementById("content-area");
   const mobileNav = document.getElementById('mobile-nav');
 
-  // --- Función para cargar contenido ---
+  // --- Función para cargar contenido usando rutas relativas ---
   async function loadContent(page) {
     try {
-      console.log(`/contenido/${page}/index.html`)
-      const response = await fetch(`/contenido/${page}/index.html`);
+      // Usar rutas relativas para mejor compatibilidad con GitHub Pages
+      const url = `./contenido/${page}/index.html`;
+      console.log(url);
+      const response = await fetch(url);
       
       if (!response.ok) throw new Error("Error al cargar " + page);
       const html = await response.text();

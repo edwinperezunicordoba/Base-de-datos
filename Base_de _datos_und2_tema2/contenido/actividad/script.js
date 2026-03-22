@@ -3,7 +3,7 @@ let wordSearchGrid = [];
 let selectedCells = [];
 let foundWords = new Set();
 
-const wordsToFind = ['CREATE', 'ALTER', 'DROP', 'TABLE', 'DATABASE', 'COLUMN', 'PRIMARY', 'FOREIGN', 'INDEX', 'VIEW'];
+const wordsToFind = ['INSERT', 'SELECT', 'UPDATE', 'DELETE', 'CRUD', 'WHERE', 'DATOS', 'REGISTROS', 'TABLA', 'DML'];
 
 // Generar sopa de letras
 function generateWordSearch() {
