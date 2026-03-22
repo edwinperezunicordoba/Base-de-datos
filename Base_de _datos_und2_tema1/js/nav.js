@@ -5,11 +5,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Detectar la base URL automáticamente ---
   const getBasePath = () => {
-    const path = window.location.pathname;
-    // Si contiene un repositorio (p.ej., /Base_de_datos_und2_tema1/), usarlo como base
-    // Si es raíz (p.ej., /), usar raíz
-    const match = path.match(/^\/([^/]+)\//);
-    return match ? `/${match[1]}/` : '/';
+    // Si estamos en GitHub Pages (dominio github.io)
+    if (window.location.hostname.includes('github.io')) {
+      const pathname = window.location.pathname;
+      const parts = pathname.split('/').filter(Boolean);
+      // El primer elemento será el nombre del repositorio
+      if (parts.length > 0) {
+        return '/' + parts[0] + '/';
+      }
+    }
+    // Si estamos en local o servidor propio
+    return '/';
   };
 
   const basePath = getBasePath();
