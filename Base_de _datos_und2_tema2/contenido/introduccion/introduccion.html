@@ -13,43 +13,49 @@
 <body>
     <!-- Introducción -->
     <div id="introduccion" class="content-pane active">
-        <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-4">Sentencias DDL (CREATE, ALTER, DROP)
+        <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-4">Sentencias DML y Operaciones CRUD
         </h2>
 
         <p class="text-slate-700 leading-relaxed mb-4">
-            Imaginen que van a construir una aplicación web, por ejemplo, un blog personal, 
-            un carrito de compras o un sistema de tareas. Toda la información dinámica de 
-            su sitio (los usuarios, los productos, las publicaciones) necesita un lugar donde 
-            ser almacenada de forma organizada y segura para poder ser recuperada y mostrada 
-            cuando sea necesario. Ese lugar es la base de datos.
+            En el ciclo de vida de cualquier aplicación web, la capacidad de interactuar con la información es el 
+            motor principal de su funcionalidad dinámica. Para entenderlo de forma práctica, imaginemos el funcionamiento 
+            de una plataforma de pedidos de comida a domicilio.
             <br>
             <br>
-            Pero, ¿cómo creamos ese "almacén" digital? No podemos simplemente empezar a tirar información en un cajón sin orden. 
-            Necesitamos, primero, construir los estantes, las cajas y definir sus etiquetas. En el mundo de las bases de datos relacionales, 
-            esas estructuras se llaman tablas, y el lenguaje que usamos para definirlas, modificarlas o eliminarlas se conoce como DDL (Data Definition Language).
+            Las sentencias DDL (Data Definition Language) se encargaron de diseñar la infraestructura de la plataforma: 
+            definieron que debe existir una "caja" llamada Pedidos, con espacios específicos para el nombre del plato,
+            el precio y la dirección de entrega. Sin embargo, una aplicación con solo estructuras está vacía; es aquí 
+            donde el Lenguaje de Manipulación de Datos (DML) cobra protagonismo, representando el contenido y el movimiento 
+            real dentro de esa estructura.
             <br>
             <br>
-            Pensemos en una analogía simple: vamos a construir un armario.
+            Dominar las operaciones CRUD (Create, Read, Update, Delete) no es solo una tarea técnica, es la base 
+            operativa de cualquier negocio digital. En nuestro ejemplo de la App de comidas:
         </p>
         <ol>
             <li class="flex items-start p-4 bg-white rounded-lg shadow-sm mb-4">
                 <span class="text-green-700 mr-3 text-2xl">🆕</span>
-                <span>CREATE: Es la acción de construir el armario. Decidimos cuántos cajones va a tener (las tablas) y qué forma tendrá cada cajón.</span>
+                <span>Cuando un cliente confirma su carrito, ejecutamos un Create (INSERT) para generar el pedido.</span>
             </li>
             <li class="flex items-start p-4 bg-white rounded-lg shadow-sm mb-4">
                 <span class="text-green-700 mr-3 text-2xl">🛠️</span>
-                <span>ALTER: Meses después, decidimos que el armario necesita un espejo en la puerta. No tiramos el armario, solo lo modificamos (ALTER) para añadirle una nueva característica.</span>
+                <span>Cuando el repartidor busca qué entregar, la App realiza un Read (SELECT) de los pedidos pendientes.</span>
             </li>
             <li class="flex items-start p-4 bg-white rounded-lg shadow-sm mb-4">
                 <span class="text-green-700 mr-3 text-2xl">🗑️</span>
-                <span>DROP: Finalmente, si el armario se daña o ya no lo necesitamos, lo eliminamos (DROP) por completo para liberar espacio.</span>
+                <span>Si el restaurante termina de cocinar, se hace un Update (UPDATE) para cambiar el estado a "En camino".</span>
+            </li>
+            <li class="flex items-start p-4 bg-white rounded-lg shadow-sm mb-4">
+                <span class="text-green-700 mr-3 text-2xl">🗑️</span>
+                <span>Si el usuario cancela antes de ser procesado, se aplica un Delete (DELETE) o un borrado lógico.</span>
             </li>
         </ol>
         <div class="mt-8 p-4 sm:p-6 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
             <p class="text-green-800">
-                ✨ <strong>En esta unidad, nos enfocaremos en dominar estas tres operaciones fundamentales. 
-                    Aprenderemos a crear nuestras tablas con las columnas y tipos de datos correctos, a modificarlas cuando los requisitos 
-                    de nuestra aplicación web cambien, y a eliminarlas de forma segura cuando ya no sean necesarias. ¡Manos a la obra!</strong>
+                ✨ <strong>Como señalan Silberschatz et al. (2020), el DML permite que el usuario final acceda y 
+                    transforme la información según sus necesidades (p. 11). Por tanto, para un programador web, 
+                    el manejo preciso de estas sentencias es lo que permite transformar una base de datos estática
+                     en una experiencia de usuario fluida, segura y en tiempo real.</strong>
             </p>
 
         </div>
