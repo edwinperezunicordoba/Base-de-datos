@@ -3,27 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const contentArea = document.getElementById("content-area");
   const mobileNav = document.getElementById('mobile-nav');
 
-  // --- Detectar la base URL automáticamente ---
-  const getBasePath = () => {
-    const pathname = window.location.pathname;
-    
-    // Si estamos en GitHub Pages (dominio github.io)
-    if (window.location.hostname.includes('github.io')) {
-      // Obtener todo hasta el último / (excluir index.html o la página actual)
-      const basePath = pathname.substring(0, pathname.lastIndexOf('/')) + '/';
-      return basePath;
-    }
-    
-    // Si estamos en local o servidor propio, usar raíz
-    return '/';
-  };
-
-  const basePath = getBasePath();
-
-  // --- Función para cargar contenido ---
+  // --- Función para cargar contenido usando rutas relativas ---
   async function loadContent(page) {
     try {
-      const url = `${basePath}contenido/${page}/index.html`;
+      // Usar rutas relativas para mejor compatibilidad con GitHub Pages
+      const url = `./contenido/${page}/index.html`;
       console.log(url);
       const response = await fetch(url);
       
