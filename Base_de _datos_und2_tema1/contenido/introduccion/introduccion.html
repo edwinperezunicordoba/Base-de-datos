@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- Introducción -->
+    <div id="introduccion" class="content-pane active">
+        <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-4">Sentencias DDL (CREATE, ALTER, DROP)
+        </h2>
+
+        <p class="text-slate-700 leading-relaxed mb-4">
+            Imaginen que van a construir una aplicación web, por ejemplo, un blog personal, 
+            un carrito de compras o un sistema de tareas. Toda la información dinámica de 
+            su sitio (los usuarios, los productos, las publicaciones) necesita un lugar donde 
+            ser almacenada de forma organizada y segura para poder ser recuperada y mostrada 
+            cuando sea necesario. Ese lugar es la base de datos.
+            <br>
+            <br>
+            Pero, ¿cómo creamos ese "almacén" digital? No podemos simplemente empezar a tirar información en un cajón sin orden. 
+            Necesitamos, primero, construir los estantes, las cajas y definir sus etiquetas. En el mundo de las bases de datos relacionales, 
+            esas estructuras se llaman tablas, y el lenguaje que usamos para definirlas, modificarlas o eliminarlas se conoce como DDL (Data Definition Language).
+            <br>
+            <br>
+            Pensemos en una analogía simple: vamos a construir un armario.
+        </p>
+        <ol>
+            <li class="flex items-start p-4 bg-white rounded-lg shadow-sm mb-4">
+                <span class="text-green-700 mr-3 text-2xl">🆕</span>
+                <span>CREATE: Es la acción de construir el armario. Decidimos cuántos cajones va a tener (las tablas) y qué forma tendrá cada cajón.</span>
+            </li>
+            <li class="flex items-start p-4 bg-white rounded-lg shadow-sm mb-4">
+                <span class="text-green-700 mr-3 text-2xl">🛠️</span>
+                <span>ALTER: Meses después, decidimos que el armario necesita un espejo en la puerta. No tiramos el armario, solo lo modificamos (ALTER) para añadirle una nueva característica.</span>
+            </li>
+            <li class="flex items-start p-4 bg-white rounded-lg shadow-sm mb-4">
+                <span class="text-green-700 mr-3 text-2xl">🗑️</span>
+                <span>DROP: Finalmente, si el armario se daña o ya no lo necesitamos, lo eliminamos (DROP) por completo para liberar espacio.</span>
+            </li>
+        </ol>
+        <div class="mt-8 p-4 sm:p-6 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+            <p class="text-green-800">
+                ✨ <strong>En esta unidad, nos enfocaremos en dominar estas tres operaciones fundamentales. 
+                    Aprenderemos a crear nuestras tablas con las columnas y tipos de datos correctos, a modificarlas cuando los requisitos 
+                    de nuestra aplicación web cambien, y a eliminarlas de forma segura cuando ya no sean necesarias. ¡Manos a la obra!</strong>
+            </p>
+
+        </div>
+        <!-- Componente de síntesis de voz para introducción -->
+        <div class="speech-controls mb-4 p-3 bg-green-100 rounded-lg flex items-center flex-wrap gap-2 mt-4"
+            data-target="introduccion">
+            <button
+                class="play-btn bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-4 rounded-full flex items-center">
+                <span class="mr-1">▶️</span> Leer
+            </button>
+            <button
+                class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-4 rounded-full flex items-center"
+                disabled>
+                <span class="mr-1">⏸️</span> Pausar
+            </button>
+            <button
+                class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-4 rounded-full flex items-center"
+                disabled>
+                <span class="mr-1">⏹️</span> Detener
+            </button>
+            <div class="flex items-center ml-2">
+                <label for="speech-rate-introduccion" class="text-sm text-green-800 mr-2">Velocidad:</label>
+                <input type="range" class="speech-rate" id="speech-rate-introduccion" min="0.5" max="2"
+                    step="0.1" value="1" class="w-24">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,376 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #ffffff;
+    padding: 20px;
+    color: #2c3e50;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    margin-bottom: 30px;
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.activity-card, .exam-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    border: 1px solid #e9ecef;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.activity-card:hover, .exam-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+}
+
+h2 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #1e3c72;
+    padding-bottom: 10px;
+}
+
+.instruction {
+    background: #e8f0fe;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+    font-size: 0.9rem;
+    color: #1e3c72;
+    border-left: 4px solid #1e3c72;
+}
+
+/* ========== SOPA DE LETRAS ========== */
+#wordsearch-container {
+    margin: 20px 0;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.wordsearch-grid {
+    display: inline-grid;
+    grid-template-columns: repeat(12, 45px);
+    gap: 2px;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+}
+
+.grid-cell {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid #dee2e6;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    font-family: monospace;
+}
+
+.grid-cell:hover {
+    background: #e9ecef;
+    transform: scale(1.02);
+}
+
+.grid-cell.selected {
+    background: #ffd966;
+    border-color: #b46504;
+}
+
+.grid-cell.found {
+    background: #28a745;
+    color: white;
+    cursor: default;
+}
+
+.word-list {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.word-list h3 {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #495057;
+}
+
+.word-list ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    list-style: none;
+}
+
+.word-list li {
+    background: #e9ecef;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.word-list li.found-word {
+    background: #28a745;
+    color: white;
+    text-decoration: line-through;
+}
+
+/* ========== ARRASTRAR Y SOLTAR ========== */
+.drag-drop-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.items-to-drag {
+    flex: 1;
+    min-width: 280px;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px dashed #adb5bd;
+}
+
+.drag-item {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    cursor: move;
+    text-align: center;
+    transition: all 0.3s;
+    user-select: none;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.drag-item:active {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.drag-item.dragging {
+    opacity: 0.3;
+}
+
+.drag-item.dropped {
+    background: #6c757d;
+    cursor: default;
+    opacity: 0.7;
+}
+
+.drop-zones {
+    flex: 2;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.drop-zone {
+    flex: 1;
+    min-width: 200px;
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+}
+
+.drop-zone h3 {
+    margin-bottom: 10px;
+    color: #1e3c72;
+}
+
+.drop-area {
+    min-height: 220px;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px dashed #adb5bd;
+}
+
+.drop-area .drag-item {
+    margin: 5px;
+    font-size: 0.8rem;
+    padding: 8px;
+    background: #28a745;
+}
+
+.zone-desc {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 10px;
+}
+
+/* ========== UNIR PALABRAS ========== */
+.matching-container {
+    display: flex;
+    gap: 30px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.matching-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.matching-column h3 {
+    margin-bottom: 15px;
+    color: #495057;
+    text-align: center;
+}
+
+.matching-item {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 12px;
+    padding: 12px 15px;
+    margin: 10px 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    font-weight: 500;
+}
+
+.matching-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-color: #1e3c72;
+}
+
+.matching-item.selected {
+    background: #ffd966;
+    border-color: #b46504;
+}
+
+.matching-item.matched {
+    background: #28a745;
+    color: white;
+    cursor: default;
+    opacity: 0.8;
+    text-decoration: line-through;
+    transform: none;
+}
+
+/* ========== FEEDBACK COMÚN ========== */
+.activity-feedback {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.feedback-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.feedback-header strong {
+    font-size: 1.2rem;
+    color: #1e3c72;
+}
+
+.errors-list {
+    margin-top: 10px;
+    padding: 12px;
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    border-radius: 8px;
+}
+
+.error-item {
+    color: #856404;
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+.reset-btn {
+    margin-top: 15px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+
+.reset-btn:hover {
+    background: #5a6268;
+    transform: scale(1.02);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .wordsearch-grid {
+        grid-template-columns: repeat(12, 32px);
+    }
+    
+    .grid-cell {
+        width: 32px;
+        height: 32px;
+        font-size: 0.7rem;
+    }
+    
+    .drag-drop-container {
+        flex-direction: column;
+    }
+    
+    .matching-container {
+        flex-direction: column;
+    }
+    
+    .activity-card, .exam-card {
+        padding: 20px;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+}

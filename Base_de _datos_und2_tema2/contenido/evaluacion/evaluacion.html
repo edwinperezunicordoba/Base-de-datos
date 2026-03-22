@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+    
+</head>
+<body>
+    <div class="container">
+         <!-- ==================== EVALUACIÓN: SELECCIÓN MÚLTIPLE ==================== -->
+        <section class="exam-card" id="exam">
+            <h2>📝 Evaluación: Selección Múltiple - DDL</h2>
+            <p>Responde las siguientes 10 preguntas. Al finalizar, obtendrás tu calificación y podrás revisar tus errores.</p>
+            
+            <form id="exam-form">
+                <!-- Pregunta 1 -->
+                <div class="question">
+                    <p><strong>1.</strong> ¿Cuál es la función principal del Lenguaje de Definición de Datos (DDL)?</p>
+                    <label><input type="radio" name="q1" value="a"> a) Manipular los datos almacenados en las tablas</label>
+                    <label><input type="radio" name="q1" value="b"> b) Definir, gestionar y modificar la estructura de los objetos de una BD</label>
+                    <label><input type="radio" name="q1" value="c"> c) Controlar los permisos de los usuarios</label>
+                    <label><input type="radio" name="q1" value="d"> d) Optimizar consultas SQL</label>
+                </div>
+                
+                <!-- Pregunta 2 -->
+                <div class="question">
+                    <p><strong>2.</strong> ¿Cuáles son las tres operaciones fundamentales del DDL?</p>
+                    <label><input type="radio" name="q2" value="a"> a) INSERT, SELECT, DELETE</label>
+                    <label><input type="radio" name="q2" value="b"> b) CREATE, ALTER, DROP</label>
+                    <label><input type="radio" name="q2" value="c"> c) ADD, MODIFY, REMOVE</label>
+                    <label><input type="radio" name="q2" value="d"> d) OPEN, CLOSE, FETCH</label>
+                </div>
+                
+                <!-- Pregunta 3 -->
+                <div class="question">
+                    <p><strong>3.</strong> ¿Qué restricción garantiza que una columna no pueda tener valores nulos?</p>
+                    <label><input type="radio" name="q3" value="a"> a) UNIQUE</label>
+                    <label><input type="radio" name="q3" value="b"> b) PRIMARY KEY</label>
+                    <label><input type="radio" name="q3" value="c"> c) NOT NULL</label>
+                    <label><input type="radio" name="q3" value="d"> d) DEFAULT</label>
+                </div>
+                
+                <!-- Pregunta 4 -->
+                <div class="question">
+                    <p><strong>4.</strong> ¿Qué hace la sentencia <code>DROP TABLE productos;</code>?</p>
+                    <label><input type="radio" name="q4" value="a"> a) Elimina solo los datos de la tabla, manteniendo su estructura</label>
+                    <label><input type="radio" name="q4" value="b"> b) Elimina la tabla y su estructura permanentemente</label>
+                    <label><input type="radio" name="q4" value="c"> c) Elimina una columna específica</label>
+                    <label><input type="radio" name="q4" value="d"> d) Vacía los datos pero conserva la tabla</label>
+                </div>
+                
+                <!-- Pregunta 5 -->
+                <div class="question">
+                    <p><strong>5.</strong> ¿Qué sentencia usarías para añadir una nueva columna <code>ciudad</code> a una tabla <code>clientes</code>?</p>
+                    <label><input type="radio" name="q5" value="a"> a) <code>CREATE COLUMN ciudad IN clientes;</code></label>
+                    <label><input type="radio" name="q5" value="b"> b) <code>ADD COLUMN ciudad TO clientes;</code></label>
+                    <label><input type="radio" name="q5" value="c"> c) <code>ALTER TABLE clientes ADD ciudad VARCHAR(100);</code></label>
+                    <label><input type="radio" name="q5" value="d"> d) <code>MODIFY TABLE clientes ADD ciudad;</code></label>
+                </div>
+                
+                <!-- Pregunta 6 -->
+                <div class="question">
+                    <p><strong>6.</strong> ¿Cuál es la diferencia entre <code>DROP TABLE</code> y <code>TRUNCATE TABLE</code>?</p>
+                    <label><input type="radio" name="q6" value="a"> a) DROP elimina solo datos; TRUNCATE elimina estructura</label>
+                    <label><input type="radio" name="q6" value="b"> b) DROP elimina tabla y estructura; TRUNCATE vacía datos pero mantiene estructura</label>
+                    <label><input type="radio" name="q6" value="c"> c) Son sinónimos</label>
+                    <label><input type="radio" name="q6" value="d"> d) TRUNCATE no se puede deshacer, DROP sí</label>
+                </div>
+                
+                <!-- Pregunta 7 -->
+                <div class="question">
+                    <p><strong>7.</strong> En una definición de tabla, <code>id_usuario INT AUTO_INCREMENT PRIMARY KEY</code> significa:</p>
+                    <label><input type="radio" name="q7" value="a"> a) La columna acepta valores nulos</label>
+                    <label><input type="radio" name="q7" value="b"> b) El valor se genera automáticamente y es clave primaria</label>
+                    <label><input type="radio" name="q7" value="c"> c) Solo permite números negativos</label>
+                    <label><input type="radio" name="q7" value="d"> d) Es una clave foránea</label>
+                </div>
+                
+                <!-- Pregunta 8 -->
+                <div class="question">
+                    <p><strong>8.</strong> ¿Qué tipo de dato utilizarías para almacenar un precio con dos decimales?</p>
+                    <label><input type="radio" name="q8" value="a"> a) INT</label>
+                    <label><input type="radio" name="q8" value="b"> b) VARCHAR</label>
+                    <label><input type="radio" name="q8" value="c"> c) DECIMAL(10,2)</label>
+                    <label><input type="radio" name="q8" value="d"> d) DATE</label>
+                </div>
+                
+                <!-- Pregunta 9 -->
+                <div class="question">
+                    <p><strong>9.</strong> ¿Qué restricción usarías para asegurar que ningún correo electrónico se repita en la tabla?</p>
+                    <label><input type="radio" name="q9" value="a"> a) NOT NULL</label>
+                    <label><input type="radio" name="q9" value="b"> b) PRIMARY KEY</label>
+                    <label><input type="radio" name="q9" value="c"> c) FOREIGN KEY</label>
+                    <label><input type="radio" name="q9" value="d"> d) UNIQUE</label>
+                </div>
+                
+                <!-- Pregunta 10 -->
+                <div class="question">
+                    <p><strong>10.</strong> ¿Qué precaución menciona el texto sobre las operaciones DROP y TRUNCATE en producción?</p>
+                    <label><input type="radio" name="q10" value="a"> a) Son lentas y afectan el rendimiento</label>
+                    <label><input type="radio" name="q10" value="b"> b) Requieren permisos especiales</label>
+                    <label><input type="radio" name="q10" value="c"> c) Son irreversibles sin un respaldo (backup)</label>
+                    <label><input type="radio" name="q10" value="d"> d) Solo pueden ejecutarse en horario nocturno</label>
+                </div>
+                
+                <div class="exam-actions">
+                    <button type="button" class="submit-exam-btn" onclick="gradeExam()">✅ Calificar Evaluación</button>
+                    <button type="button" class="reset-exam-btn" onclick="resetExam()">🔄 Reiniciar Evaluación</button>
+                </div>
+            </form>
+            
+            <div id="exam-results" class="exam-feedback" style="display: none;">
+                <div class="results-header">
+                    <h3>📊 Resultados de la Evaluación</h3>
+                </div>
+                <div class="score-circle">
+                    <span id="exam-score">0</span>
+                    <span class="score-total">/10</span>
+                </div>
+                <div id="exam-errors-list" class="errors-list"></div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
+<script src="script.js"></script>

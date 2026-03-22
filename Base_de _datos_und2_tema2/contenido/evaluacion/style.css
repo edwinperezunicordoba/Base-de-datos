@@ -1,0 +1,196 @@
+/* ========== ESTILOS ESPECÍFICOS PARA LA EVALUACIÓN ========== */
+
+.exam-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+}
+
+.exam-card h2 {
+    color: #1e3c72;
+    border-bottom-color: #1e3c72;
+}
+
+.exam-card .question {
+    background: #f8f9fa;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 12px;
+    border-left: 4px solid #1e3c72;
+    transition: all 0.3s;
+}
+
+.exam-card .question:hover {
+    background: #ffffff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.exam-card .question p {
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #2c3e50;
+}
+
+.exam-card .question code {
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #c7254e;
+}
+
+.exam-card label {
+    display: block;
+    margin: 10px 0;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.exam-card label:hover {
+    background: #e9ecef;
+}
+
+.exam-card input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+    accent-color: #1e3c72;
+}
+
+.exam-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.submit-exam-btn {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.submit-exam-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(30,60,114,0.3);
+}
+
+.reset-exam-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.reset-exam-btn:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* Resultados de la evaluación */
+.exam-feedback {
+    margin-top: 30px;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    border: 2px solid #e9ecef;
+    text-align: center;
+}
+
+.results-header h3 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.score-circle {
+    margin: 20px auto;
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.score-circle span:first-child {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+}
+
+.score-total {
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.8);
+}
+
+.exam-feedback .errors-list {
+    text-align: left;
+    margin-top: 20px;
+    background: #fff3cd;
+    border-left-color: #ffc107;
+}
+
+.exam-feedback .errors-list h4 {
+    color: #856404;
+    margin-bottom: 12px;
+}
+
+/* Pregunta incorrecta destacada */
+.question.incorrect {
+    border-left-color: #dc3545;
+    background: #fff5f5;
+}
+
+/* Animación para resultados */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.exam-feedback {
+    animation: fadeInUp 0.5s ease;
+}
+
+/* Responsive para evaluación */
+@media (max-width: 768px) {
+    .exam-card .question {
+        padding: 15px;
+    }
+    
+    .submit-exam-btn, .reset-exam-btn {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
+    
+    .score-circle {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .score-circle span:first-child {
+        font-size: 2.5rem;
+    }
+}
