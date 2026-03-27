@@ -1,21 +1,16 @@
 /* ========== ESTILOS ESPECÍFICOS PARA LA EVALUACIÓN ========== */
 
-.exam-card {
-    background: #ffffff;
-    border: 1px solid #e9ecef;
-}
-
 .exam-card h2 {
-    color: #1e3c72;
-    border-bottom-color: #1e3c72;
+    color: #22c55e;
+    border-bottom-color: #22c55e;
 }
 
 .exam-card .question {
-    background: #f8f9fa;
+    background: #ffffff;
     padding: 20px;
     margin: 20px 0;
     border-radius: 12px;
-    border-left: 4px solid #1e3c72;
+    border-left: 4px solid #22c55e;
     transition: all 0.3s;
 }
 
@@ -55,7 +50,7 @@
 .exam-card input[type="radio"] {
     margin-right: 10px;
     cursor: pointer;
-    accent-color: #1e3c72;
+    accent-color: #22c55e;
 }
 
 .exam-actions {
@@ -67,7 +62,7 @@
 }
 
 .submit-exam-btn {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: linear-gradient(135deg, #22c55e 0%, #22c55e 100%);
     color: white;
     border: none;
     padding: 14px 35px;
@@ -111,7 +106,7 @@
 }
 
 .results-header h3 {
-    color: #1e3c72;
+    color: #22c55e;
     margin-bottom: 20px;
     font-size: 1.5rem;
 }
@@ -120,7 +115,7 @@
     margin: 20px auto;
     width: 120px;
     height: 120px;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: linear-gradient(135deg, #22c55e 0%, #22c55e 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
