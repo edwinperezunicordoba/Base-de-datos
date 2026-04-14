@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- Introducción -->
+    <div id="introduccion" class="content-pane active">
+        <h2 class="text-2xl sm:text-3xl font-bold text-green-800 mb-4">Conexión de aplicaciones con bases de datos
+        </h2>
+
+        <p class="text-slate-700 leading-relaxed mb-4">
+            Hasta ahora, hemos trabajado directamente sobre el motor de la base de datos, escribiendo código SQL .
+            en una consola. Sin embargo, en el mundo real, los usuarios no usan consolas de comandos; usan interfaces 
+            web. El puente que permite que tu código (ya sea en JavaScript, Python o PHP) hable con el motor de 
+            base de datos es la capa de conexión.
+            <br>
+            <br>
+            Entender cómo establecer este enlace es el primer paso para crear aplicaciones dinámicas. Si la conexión falla, 
+            la aplicación es simplemente un cascarón vacío. Aquí aprenderás cómo configurar ese "enchufe" técnico para que los datos 
+            fluyan de forma segura y eficiente.
+            <br>           
+        <div class="mt-8 p-4 sm:p-6 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+            <p class="text-green-800">
+                ✨ <strong>La conexión con bases de datos es la columna vertebral de casi toda aplicación web moderna. Sin ella, no existirían
+                     las redes sociales, los e-commerce, los sistemas bancarios ni las plataformas de streaming.
+                     Dominar este concepto desde el nivel técnico te abre las puertas a construir proyectos reales y con valor profesional.</strong>
+            </p>
+
+        </div>
+        <!-- Componente de síntesis de voz para introducción -->
+        <div class="speech-controls mb-4 p-3 bg-green-100 rounded-lg flex items-center flex-wrap gap-2 mt-4"
+            data-target="introduccion">
+            <button
+                class="play-btn bg-green-600 hover:bg-green-700 text-white font-medium py-1 px-4 rounded-full flex items-center">
+                <span class="mr-1">▶️</span> Leer
+            </button>
+            <button
+                class="pause-btn bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-1 px-4 rounded-full flex items-center"
+                disabled>
+                <span class="mr-1">⏸️</span> Pausar
+            </button>
+            <button
+                class="stop-btn bg-red-500 hover:bg-red-600 text-white font-medium py-1 px-4 rounded-full flex items-center"
+                disabled>
+                <span class="mr-1">⏹️</span> Detener
+            </button>
+            <div class="flex items-center ml-2">
+                <label for="speech-rate-introduccion" class="text-sm text-green-800 mr-2">Velocidad:</label>
+                <input type="range" class="speech-rate" id="speech-rate-introduccion" min="0.5" max="2"
+                    step="0.1" value="1" class="w-24">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
