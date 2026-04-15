@@ -1,9 +1,7 @@
-css
 :root {
     --rojo-fuerte: #E22F6B;
     --verde-oscuro: #569151;
     --verde: #67BD50;
-    --verde-claro: #A3D17C;
     --azul-claro: #69CBE1;
     --negro: #000000;
     --blanco: #ffffff;
@@ -11,7 +9,7 @@ css
 }
 
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--gris-claro);
     display: flex;
     justify-content: center;
@@ -28,6 +26,9 @@ body {
     border-top: 10px solid var(--verde);
 }
 
+header { text-align: center; margin-bottom: 30px; }
+h1 { color: var(--verde-oscuro); }
+
 .question-block {
     margin-bottom: 20px;
     padding: 15px;
@@ -35,21 +36,21 @@ body {
     border: 1px solid #ddd;
 }
 
-.question-text { font-weight: bold; margin-bottom: 10px; }
+.question-text { font-weight: bold; margin-bottom: 10px; color: var(--negro); }
 
 .options label {
     display: block;
-    padding: 10px;
-    margin: 5px 0;
+    padding: 12px;
+    margin: 8px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
 }
 
-/* Clases de Retroalimentación */
 .correct-row { background-color: #d4edda !important; border-color: var(--verde) !important; }
 .incorrect-row { background-color: #f8d7da !important; border-color: var(--rojo-fuerte) !important; }
-.feedback { font-size: 0.9rem; font-weight: bold; margin-top: 5px; display: block; }
+
+.feedback { font-size: 0.9rem; font-weight: bold; margin-top: 5px; }
 .correct-text { color: var(--verde-oscuro); }
 .incorrect-text { color: var(--rojo-fuerte); }
 
@@ -71,6 +72,19 @@ body {
     font-size: 1.1rem;
     cursor: pointer;
     border-radius: 5px;
+    font-weight: bold;
 }
 
+.btn-secondary {
+    background: var(--azul-claro);
+    color: var(--negro);
+    border: none;
+    padding: 15px;
+    width: 100%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.results-container { padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center; }
 .hidden { display: none; }

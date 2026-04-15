@@ -1,14 +1,15 @@
+javascript
 const quizData = [
-    { q: "¿Cuál es el puerto por defecto para PostgreSQL?", a: ["3306", "5432", "80", "1521"], c: 1 },
-    { q: "¿Qué componente traduce órdenes de Node.js al lenguaje de la BD?", a: ["El Pool", "La Cadena", "El Driver", "El Host"], c: 2 },
-    { q: "En producción, ¿dónde se deben guardar las contraseñas?", a: ["En el código", "En archivos .env", "En la base de datos", "En el README"], c: 1 },
-    { q: "¿Qué ventaja principal ofrece el 'Pool de conexiones'?", a: ["Seguridad extra", "Ahorro de RAM", "Reutilización de conexiones", "Cifra los datos"], c: 2 },
-    { q: "Si usas PostgreSQL en Node.js, ¿qué librería es el estándar?", a: ["mysql2", "psycopg2", "pg (node-postgres)", "mysqli"], c: 2 },
-    { q: "La estructura 'protocolo://usuario:contraseña@host' es:", a: ["Un Driver", "Un Pool", "Una Cadena de Conexión", "Un Query Builder"], c: 2 },
-    { q: "¿Qué característica de mysql2 facilita el código asíncrono?", a: ["Soporte para Promesas", "Uso de Callbacks", "Uso de XML", "Velocidad"], c: 0 },
-    { q: "¿Qué enfoque trata las tablas como objetos de programación?", a: ["SQL Directo", "ORM", "Driver Nativo", "JSON Builder"], c: 1 },
-    { q: "¿Por qué se recomienda SQL directo en nivel técnico?", a: ["Es más lento", "Permite entender qué pasa con los datos", "No requiere instalar nada", "Es más moderno"], c: 1 },
-    { q: "¿Qué sucede si no cierras una conexión básica (Client/Connection)?", a: ["Se cierra sola", "Se desperdician recursos", "La BD explota", "Se acelera el PC"], c: 1 }
+    { q: "¿Qué ocurre en un ataque de Inyección SQL?", a: ["Se borra el disco duro del servidor", "Se envía código malicioso que la aplicación ejecuta como instrucción legítima", "Se satura la red con peticiones falsas", "Se cambia el CSS de la página"], c: 1 },
+    { q: "¿Cuál es la causa técnica principal de la Inyección SQL?", a: ["Usar contraseñas cortas", "Cerrar mal la conexión", "Concatenar variables directamente en la consulta SQL", "No usar HTTPS"], c: 2 },
+    { q: "Si un atacante escribe ' OR '1'='1 en un login mal programado, ¿qué busca?", a: ["Cambiar su nombre de usuario", "Bypass de autenticación (entrar sin contraseña)", "Borrar todas las tablas", "Cifrar la base de datos"], c: 1 },
+    { q: "¿Cuál es la técnica robusta para evitar la inyección SQL?", a: ["Usar mayúsculas en SQL", "Consultas Preparadas (Prepared Statements)", "Validar solo en el Front-end", "Ocultar el puerto de la base de datos"], c: 1 },
+    { q: "¿Qué función cumplen los 'marcadores' (?) en una consulta preparada?", a: ["Son comentarios para el programador", "Representan donde irán los datos de forma segura sin ser ejecutados como código", "Sirven para hacer preguntas a la base de datos", "Indican un error en la sintaxis"], c: 1 },
+    { q: "¿Por qué NO debemos confiar únicamente en las validaciones del Front-end (HTML/JS)?", a: ["Porque son muy lentas", "Porque pueden ser saltadas o manipuladas fácilmente", "Porque el navegador no las entiende", "Porque ocupan mucho espacio"], c: 1 },
+    { q: "¿Qué herramienta se usa comúnmente para validar el formato de un correo electrónico?", a: ["Consultas SQL", "Expresiones Regulares (Regex)", "Un Pool de conexiones", "Un archivo .env"], c: 1 },
+    { q: "¿Cómo debe responder el servidor ante un error interno de base de datos?", a: ["Mostrando el error completo (ej: Table not found)", "Reiniciando el servidor", "Con un mensaje genérico (ej: Ocurrió un problema interno)", "Enviando el código SQL al cliente"], c: 2 },
+    { q: "¿Qué tipo de validación asegura que un campo 'precio' no reciba letras?", a: ["Validación de longitud", "Validación de tipo de dato", "Validación de formato Regex", "Consulta preparada"], c: 1 },
+    { q: "En el ejemplo 'db.execute(query, [id])', ¿qué representa el array [id]?", a: ["Los nombres de las tablas", "La contraseña de la base de datos", "Los datos enviados por separado de la estructura de la consulta", "El puerto de conexión"], c: 2 }
 ];
 
 const quizContainer = document.getElementById('quiz');
@@ -18,7 +19,7 @@ const resultsDiv = document.getElementById('results');
 
 function initQuiz() {
     quizContainer.innerHTML = quizData.map((data, i) => `
-        <div class="question-block" id="block-${i}">
+        <div class="question-block">
             <p class="question-text">${i + 1}. ${data.q}</p>
             <div class="options">
                 ${data.a.map((opt, j) => `
@@ -46,10 +47,10 @@ submitBtn.addEventListener('click', () => {
 
     if (answeredCount < quizData.length) {
         errorBox.classList.remove('hidden');
+        window.scrollTo(0, errorBox.offsetTop - 50);
         return;
     }
 
-    // Si todo está respondido:
     errorBox.classList.add('hidden');
     submitBtn.classList.add('hidden');
     document.getElementById('retry-btn').classList.remove('hidden');
@@ -67,13 +68,21 @@ submitBtn.addEventListener('click', () => {
             feedbackEl.innerHTML = `<span class="correct-text">✓ ¡Correcto!</span>`;
         } else {
             selectedLabel.classList.add('incorrect-row');
-            const correctText = data.a[data.c];
-            feedbackEl.innerHTML = `<span class="incorrect-text">✗ Incorrecto. La respuesta era: ${correctText}</span>`;
+            feedbackEl.innerHTML = `<span class="incorrect-text">✗ Incorrecto. La respuesta correcta era: ${data.a[data.c]}</span>`;
         }
     });
 
+    const percentage = (score / quizData.length) * 100;
+    const passed = percentage >= 70;
+
     resultsDiv.classList.remove('hidden');
-    document.getElementById('score-title').innerText = `Resultado: ${score} / ${quizData.length}`;
+    resultsDiv.style.backgroundColor = passed ? "#d4edda" : "#f8d7da";
+    
+    document.getElementById('score-title').innerText = `Puntaje: ${percentage}% (${score} / ${quizData.length})`;
+    document.getElementById('score-text').innerHTML = passed 
+        ? `<strong>¡Excelente!</strong> Has demostrado conocimientos sólidos en seguridad de bases de datos.` 
+        : `<strong>Aún no superas el mínimo (70%).</strong> Repasa los conceptos de Inyección SQL y Consultas Preparadas antes de volver a intentarlo.`;
+
     window.scrollTo(0, 0);
 });
 
