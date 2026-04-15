@@ -1,136 +1,80 @@
-// ==================== EVALUACIÓN ====================
+const quizData = [
+    { q: "¿Cuál es el puerto por defecto para PostgreSQL?", a: ["3306", "5432", "80", "1521"], c: 1 },
+    { q: "¿Qué componente traduce órdenes de Node.js al lenguaje de la BD?", a: ["El Pool", "La Cadena", "El Driver", "El Host"], c: 2 },
+    { q: "En producción, ¿dónde se deben guardar las contraseñas?", a: ["En el código", "En archivos .env", "En la base de datos", "En el README"], c: 1 },
+    { q: "¿Qué ventaja principal ofrece el 'Pool de conexiones'?", a: ["Seguridad extra", "Ahorro de RAM", "Reutilización de conexiones", "Cifra los datos"], c: 2 },
+    { q: "Si usas PostgreSQL en Node.js, ¿qué librería es el estándar?", a: ["mysql2", "psycopg2", "pg (node-postgres)", "mysqli"], c: 2 },
+    { q: "La estructura 'protocolo://usuario:contraseña@host' es:", a: ["Un Driver", "Un Pool", "Una Cadena de Conexión", "Un Query Builder"], c: 2 },
+    { q: "¿Qué característica de mysql2 facilita el código asíncrono?", a: ["Soporte para Promesas", "Uso de Callbacks", "Uso de XML", "Velocidad"], c: 0 },
+    { q: "¿Qué enfoque trata las tablas como objetos de programación?", a: ["SQL Directo", "ORM", "Driver Nativo", "JSON Builder"], c: 1 },
+    { q: "¿Por qué se recomienda SQL directo en nivel técnico?", a: ["Es más lento", "Permite entender qué pasa con los datos", "No requiere instalar nada", "Es más moderno"], c: 1 },
+    { q: "¿Qué sucede si no cierras una conexión básica (Client/Connection)?", a: ["Se cierra sola", "Se desperdician recursos", "La BD explota", "Se acelera el PC"], c: 1 }
+];
 
-// Respuestas correctas
-const examAnswers = {
-    q1: 'b',
-    q2: 'b',
-    q3: 'c',
-    q4: 'b',
-    q5: 'c',
-    q6: 'b',
-    q7: 'b',
-    q8: 'c',
-    q9: 'd',
-    q10: 'c'
-};
+const quizContainer = document.getElementById('quiz');
+const submitBtn = document.getElementById('submit-btn');
+const errorBox = document.getElementById('error-message');
+const resultsDiv = document.getElementById('results');
 
-// Calificar evaluación
-function gradeExam() {
-    let score = 0;
-    const errors = [];
-    const userAnswers = {};
-    
-    // Limpiar estilos de preguntas incorrectas anteriores
-    document.querySelectorAll('.question').forEach(q => {
-        q.classList.remove('incorrect');
-    });
-    
-    // Evaluar cada pregunta
-    for(let i = 1; i <= 10; i++) {
+function initQuiz() {
+    quizContainer.innerHTML = quizData.map((data, i) => `
+        <div class="question-block" id="block-${i}">
+            <p class="question-text">${i + 1}. ${data.q}</p>
+            <div class="options">
+                ${data.a.map((opt, j) => `
+                    <label id="label-${i}-${j}">
+                        <input type="radio" name="q${i}" value="${j}"> ${opt}
+                    </label>
+                `).join('')}
+            </div>
+            <div id="feedback-${i}" class="feedback hidden"></div>
+        </div>
+    `).join('');
+}
+
+submitBtn.addEventListener('click', () => {
+    let answeredCount = 0;
+    const userAnswers = [];
+
+    quizData.forEach((_, i) => {
         const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        const questionDiv = document.querySelector(`.question:nth-child(${i})`);
-        
-        if(selected && selected.value === examAnswers[`q${i}`]) {
-            score++;
-            userAnswers[`q${i}`] = true;
-        } else {
-            const questionText = questionDiv.querySelector('p').innerText;
-            const correctAnswer = getCorrectAnswerText(i);
-            const userAnswerText = selected ? getAnswerLetterText(i, selected.value) : 'No respondida';
-            
-            errors.push({
-                number: i,
-                question: questionText.substring(0, 100),
-                correct: correctAnswer,
-                user: userAnswerText
-            });
-            
-            userAnswers[`q${i}`] = false;
-            questionDiv.classList.add('incorrect');
+        if (selected) {
+            answeredCount++;
+            userAnswers.push(parseInt(selected.value));
         }
-    }
-    
-    // Mostrar resultados
-    document.getElementById('exam-score').textContent = score;
-    const examResults = document.getElementById('exam-results');
-    examResults.style.display = 'block';
-    
-    const errorsListDiv = document.getElementById('exam-errors-list');
-    
-    if(errors.length > 0) {
-        let errorsHtml = '<h4>❌ Preguntas incorrectas:</h4>';
-        errors.forEach(err => {
-            errorsHtml += `
-                <div class="error-item" style="margin-bottom: 12px;">
-                    <strong>Pregunta ${err.number}:</strong><br>
-                    <span style="color: #dc3545;">Tu respuesta: ${err.user}</span><br>
-                    <span style="color: #28a745;">Respuesta correcta: ${err.correct}</span>
-                </div>
-            `;
-        });
-        errorsListDiv.innerHTML = errorsHtml;
-    } else {
-        errorsListDiv.innerHTML = '<div class="error-item" style="background: #d4edda; color: #155724; border-left-color: #28a745;">🎉 ¡Excelente! Obtuviste calificación perfecta. ¡Dominas el tema de DDL!</div>';
-    }
-    
-    // Scroll a resultados
-    examResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Obtener texto de respuesta correcta
-function getCorrectAnswerText(questionNumber) {
-    const correctAnswers = {
-        1: 'b) Definir, gestionar y modificar la estructura de los objetos de una BD',
-        2: 'b) CREATE, ALTER, DROP',
-        3: 'c) NOT NULL',
-        4: 'b) Elimina la tabla y su estructura permanentemente',
-        5: 'c) ALTER TABLE clientes ADD ciudad VARCHAR(100);',
-        6: 'b) DROP elimina tabla y estructura; TRUNCATE vacía datos pero mantiene estructura',
-        7: 'b) El valor se genera automáticamente y es clave primaria',
-        8: 'c) DECIMAL(10,2)',
-        9: 'd) UNIQUE',
-        10: 'c) Son irreversibles sin un respaldo (backup)'
-    };
-    return correctAnswers[questionNumber] || 'No especificada';
-}
-
-// Obtener texto de respuesta del usuario
-function getAnswerLetterText(questionNumber, letter) {
-    const answerTexts = {
-        1: {'a': 'a) Manipular los datos almacenados en las tablas', 'b': 'b) Definir, gestionar y modificar la estructura de los objetos de una BD', 'c': 'c) Controlar los permisos de los usuarios', 'd': 'd) Optimizar consultas SQL'},
-        2: {'a': 'a) INSERT, SELECT, DELETE', 'b': 'b) CREATE, ALTER, DROP', 'c': 'c) ADD, MODIFY, REMOVE', 'd': 'd) OPEN, CLOSE, FETCH'},
-        3: {'a': 'a) UNIQUE', 'b': 'b) PRIMARY KEY', 'c': 'c) NOT NULL', 'd': 'd) DEFAULT'},
-        4: {'a': 'a) Elimina solo los datos de la tabla, manteniendo su estructura', 'b': 'b) Elimina la tabla y su estructura permanentemente', 'c': 'c) Elimina una columna específica', 'd': 'd) Vacía los datos pero conserva la tabla'},
-        5: {'a': 'a) CREATE COLUMN ciudad IN clientes;', 'b': 'b) ADD COLUMN ciudad TO clientes;', 'c': 'c) ALTER TABLE clientes ADD ciudad VARCHAR(100);', 'd': 'd) MODIFY TABLE clientes ADD ciudad;'},
-        6: {'a': 'a) DROP elimina solo datos; TRUNCATE elimina estructura', 'b': 'b) DROP elimina tabla y estructura; TRUNCATE vacía datos pero mantiene estructura', 'c': 'c) Son sinónimos', 'd': 'd) TRUNCATE no se puede deshacer, DROP sí'},
-        7: {'a': 'a) La columna acepta valores nulos', 'b': 'b) El valor se genera automáticamente y es clave primaria', 'c': 'c) Solo permite números negativos', 'd': 'd) Es una clave foránea'},
-        8: {'a': 'a) INT', 'b': 'b) VARCHAR', 'c': 'c) DECIMAL(10,2)', 'd': 'd) DATE'},
-        9: {'a': 'a) NOT NULL', 'b': 'b) PRIMARY KEY', 'c': 'c) FOREIGN KEY', 'd': 'd) UNIQUE'},
-        10: {'a': 'a) Son lentas y afectan el rendimiento', 'b': 'b) Requieren permisos especiales', 'c': 'c) Son irreversibles sin un respaldo (backup)', 'd': 'd) Solo pueden ejecutarse en horario nocturno'}
-    };
-    return answerTexts[questionNumber]?.[letter] || `Opción ${letter.toUpperCase()}`;
-}
-
-// Reiniciar evaluación
-function resetExam() {
-    // Limpiar todos los radios seleccionados
-    const radioButtons = document.querySelectorAll('#exam-form input[type="radio"]');
-    radioButtons.forEach(radio => {
-        radio.checked = false;
     });
+
+    if (answeredCount < quizData.length) {
+        errorBox.classList.remove('hidden');
+        return;
+    }
+
+    // Si todo está respondido:
+    errorBox.classList.add('hidden');
+    submitBtn.classList.add('hidden');
+    document.getElementById('retry-btn').classList.remove('hidden');
     
-    // Limpiar estilos de preguntas incorrectas
-    document.querySelectorAll('.question').forEach(q => {
-        q.classList.remove('incorrect');
+    let score = 0;
+    quizData.forEach((data, i) => {
+        const isCorrect = userAnswers[i] === data.c;
+        const feedbackEl = document.getElementById(`feedback-${i}`);
+        const selectedLabel = document.getElementById(`label-${i}-${userAnswers[i]}`);
+        
+        feedbackEl.classList.remove('hidden');
+        if (isCorrect) {
+            score++;
+            selectedLabel.classList.add('correct-row');
+            feedbackEl.innerHTML = `<span class="correct-text">✓ ¡Correcto!</span>`;
+        } else {
+            selectedLabel.classList.add('incorrect-row');
+            const correctText = data.a[data.c];
+            feedbackEl.innerHTML = `<span class="incorrect-text">✗ Incorrecto. La respuesta era: ${correctText}</span>`;
+        }
     });
-    
-    // Ocultar resultados
-    const examResults = document.getElementById('exam-results');
-    examResults.style.display = 'none';
-    
-    // Limpiar lista de errores
-    document.getElementById('exam-errors-list').innerHTML = '';
-    
-    // Scroll al inicio de la evaluación
-    document.getElementById('exam').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+
+    resultsDiv.classList.remove('hidden');
+    document.getElementById('score-title').innerText = `Resultado: ${score} / ${quizData.length}`;
+    window.scrollTo(0, 0);
+});
+
+initQuiz();
