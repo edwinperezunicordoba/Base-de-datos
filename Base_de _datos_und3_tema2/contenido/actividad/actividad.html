@@ -7,239 +7,90 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🔗 Endpoints API para CRUD</h1>
-            <p>Actividades interactivas para aprender a construir endpoints API</p>
-        </header>
+<div class="container">
+    <header>
+        <div class="header-icon">🔗</div>
+        <h1>Endpoints API para CRUD</h1>
+        <p>Actividades interactivas para aprender a construir endpoints API REST</p>
+    </header>
 
-        <!-- ==================== ACTIVIDAD 1: SOPA DE LETRAS ==================== -->
-        <section class="activity-card" id="activity1">
-            <h2>🔍 Actividad 1: Sopa de Letras - Términos API</h2>
-            <p>Encuentra las siguientes palabras relacionadas con APIs y operaciones CRUD: <strong>GET, POST, PUT, DELETE, ENDPOINT, ROUTE, REQUEST, RESPONSE, STATUS, HEADER, BODY, JSON, REST, API, CRUD, METHOD</strong></p>
-            <p class="instruction">💡 Haz clic en las letras en orden para formar cada palabra. Las palabras pueden estar en horizontal o vertical.</p>
+    <!-- ACTIVIDAD 1: SOPA DE LETRAS -->
+    <section class="activity-card" id="activity1">
+        <div class="card-label">Actividad 1</div>
+        <h2>🔍 Sopa de Letras — Términos API</h2>
+        <p>Encuentra las 16 palabras relacionadas con APIs y operaciones CRUD ocultas en la cuadrícula.</p>
+        <p class="instruction">💡 Haz clic en la primera letra y arrastra hasta la última para seleccionar cada palabra. Pueden estar en horizontal, vertical o diagonal.</p>
 
-            <div id="wordsearch-container">
-                <!-- La sopa de letras se genera con JS -->
-            </div>
-
+        <div id="wordsearch-wrapper">
+            <div id="wordsearch-container"></div>
             <div class="word-list">
-                <h3>📝 Palabras a encontrar:</h3>
-                <ul id="words-to-find">
-                    <li data-word="GET">GET</li>
-                    <li data-word="POST">POST</li>
-                    <li data-word="PUT">PUT</li>
-                    <li data-word="DELETE">DELETE</li>
-                    <li data-word="ENDPOINT">ENDPOINT</li>
-                    <li data-word="ROUTE">ROUTE</li>
-                    <li data-word="REQUEST">REQUEST</li>
-                    <li data-word="RESPONSE">RESPONSE</li>
-                    <li data-word="STATUS">STATUS</li>
-                    <li data-word="HEADER">HEADER</li>
-                    <li data-word="BODY">BODY</li>
-                    <li data-word="JSON">JSON</li>
-                    <li data-word="REST">REST</li>
-                    <li data-word="API">API</li>
-                    <li data-word="CRUD">CRUD</li>
-                    <li data-word="METHOD">METHOD</li>
-                </ul>
+                <h3>📝 Palabras a encontrar</h3>
+                <ul id="words-to-find"></ul>
             </div>
+        </div>
 
-            <div class="activity-feedback">
-                <div class="feedback-header">
-                    <span>✅ Palabras encontradas:</span>
-                    <strong><span id="found-count">0</span> / <span id="total-words">16</span></strong>
-                </div>
-                <div id="wordsearch-errors" class="errors-list"></div>
+        <div class="activity-feedback">
+            <div class="feedback-header">
+                <span>✅ Palabras encontradas: <strong><span id="found-count">0</span> / <span id="total-words">16</span></strong></span>
             </div>
-            <button class="reset-btn" onclick="resetWordSearch()">🔄 Reiniciar Sopa</button>
-        </section>
+            <div id="wordsearch-feedback" class="feedback-msg"></div>
+        </div>
+        <button class="reset-btn" onclick="resetWordSearch()">🔄 Reiniciar Sopa</button>
+    </section>
 
-        <!-- ==================== ACTIVIDAD 2: ARRASTRAR Y SOLTAR ==================== -->
-        <section class="activity-card" id="activity2">
-            <h2>🖱️ Actividad 2: Arrastrar y Soltar - Métodos HTTP y Operaciones CRUD</h2>
-            <p>Lee cada descripción de operación y arrastra la descripción correcta al método HTTP que le corresponde.</p>
+    <!-- ACTIVIDAD 2: ARRASTRAR Y SOLTAR -->
+    <section class="activity-card" id="activity2">
+        <div class="card-label">Actividad 2</div>
+        <h2>🖱️ Arrastrar y Soltar — Métodos HTTP y CRUD</h2>
+        <p>Arrastra cada descripción de operación al método HTTP que le corresponde.</p>
+        <p class="instruction">💡 Cada zona acepta una sola tarjeta. Los elementos incorrectos se mostrarán en rojo.</p>
 
-            <div class="drag-drop-container">
-                <div class="items-to-drag" id="drag-items">
-                    <div class="drag-item" draggable="true" data-correct="GET">Obtener todos los usuarios de la base de datos</div>
-                    <div class="drag-item" draggable="true" data-correct="GET">Obtener un usuario específico por su ID</div>
-                    <div class="drag-item" draggable="true" data-correct="POST">Crear un nuevo usuario en la base de datos</div>
-                    <div class="drag-item" draggable="true" data-correct="PUT">Actualizar completamente la información de un usuario</div>
-                    <div class="drag-item" draggable="true" data-correct="DELETE">Eliminar un usuario de la base de datos</div>
-                    <div class="drag-item" draggable="true" data-correct="PATCH">Actualizar parcialmente algunos campos de un usuario</div>
-                    <div class="drag-item" draggable="true" data-correct="GET">Verificar si un endpoint está funcionando (health check)</div>
-                    <div class="drag-item" draggable="true" data-correct="POST">Enviar datos de login para autenticación</div>
-                </div>
-
-                <div class="drop-zones">
-                    <div class="drop-zone" data-expected="GET">
-                        <h3>📖 GET</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="POST">
-                        <h3>📝 POST</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="PUT">
-                        <h3>🔄 PUT</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="PATCH">
-                        <h3>✏️ PATCH</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="DELETE">
-                        <h3>🗑️ DELETE</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                </div>
+        <div class="drag-drop-container">
+            <div class="items-to-drag" id="drag-items-2">
+                <!-- generado por JS -->
             </div>
-
-            <div class="activity-feedback">
-                <div class="feedback-header">
-                    <span>✅ Descripciones colocadas correctamente:</span>
-                    <strong><span id="drag-correct-count">0</span> / <span id="drag-total-count">8</span></strong>
-                </div>
-                <div id="drag-errors" class="errors-list"></div>
+            <div class="drop-zones" id="drop-zones-2">
+                <!-- generado por JS -->
             </div>
-            <button class="reset-btn" onclick="resetDragDrop()">🔄 Reiniciar Actividad</button>
-        </section>
+        </div>
 
-        <!-- ==================== ACTIVIDAD 3: UNIR PALABRAS ==================== -->
-        <section class="activity-card" id="activity3">
-            <h2>🔗 Actividad 3: Unir Palabras - Códigos de Estado HTTP</h2>
-            <p>Haz clic en un código de estado de la izquierda y luego en su descripción de la derecha para emparejarlos.</p>
-            <p class="instruction">💡 Los pares correctos se marcarán en verde.</p>
-
-            <div class="matching-container">
-                <div class="matching-column" id="terms-column">
-                    <h3>🔢 Códigos HTTP</h3>
-                    <div class="matching-item" data-term="200">200</div>
-                    <div class="matching-item" data-term="201">201</div>
-                    <div class="matching-item" data-term="400">400</div>
-                    <div class="matching-item" data-term="401">401</div>
-                    <div class="matching-item" data-term="404">404</div>
-                    <div class="matching-item" data-term="500">500</div>
-                    <div class="matching-item" data-term="GET">GET</div>
-                    <div class="matching-item" data-term="POST">POST</div>
-                </div>
-
-                <div class="matching-column" id="definitions-column">
-                    <h3>📝 Descripciones</h3>
-                    <div class="matching-item" data-def="200">OK - La solicitud se procesó correctamente</div>
-                    <div class="matching-item" data-def="201">Created - Recurso creado exitosamente</div>
-                    <div class="matching-item" data-def="400">Bad Request - La solicitud tiene sintaxis incorrecta</div>
-                    <div class="matching-item" data-def="401">Unauthorized - Se requiere autenticación</div>
-                    <div class="matching-item" data-def="404">Not Found - El recurso solicitado no existe</div>
-                    <div class="matching-item" data-def="500">Internal Server Error - Error interno del servidor</div>
-                    <div class="matching-item" data-def="GET">Método para leer/obtener datos del servidor</div>
-                    <div class="matching-item" data-def="POST">Método para crear nuevos recursos en el servidor</div>
-                </div>
+        <div class="activity-feedback">
+            <div class="feedback-header">
+                <span>✅ Correctos: <strong><span id="drag-correct-count">0</span> / <span id="drag-total-count">8</span></strong></span>
             </div>
+            <div id="drag-feedback" class="feedback-msg"></div>
+        </div>
+        <button class="reset-btn" onclick="resetDragDrop()">🔄 Reiniciar Actividad</button>
+    </section>
 
-            <div class="activity-feedback">
-                <div class="feedback-header">
-                    <span>✅ Parejas correctas:</span>
-                    <strong><span id="matching-correct-count">0</span> / <span id="matching-total-count">8</span></strong>
-                </div>
-                <div id="matching-errors" class="errors-list"></div>
+    <!-- ACTIVIDAD 3: UNIR PALABRAS -->
+    <section class="activity-card" id="activity3">
+        <div class="card-label">Actividad 3</div>
+        <h2>🔗 Unir Palabras — Métodos HTTP y Códigos de Estado</h2>
+        <p>Haz clic en un método HTTP o código de error y luego en su descripción para emparejarlos.</p>
+        <p class="instruction">💡 Los pares correctos se marcarán en verde. Los incorrectos parpadearán en rojo.</p>
+
+        <div class="matching-container">
+            <div class="matching-column">
+                <h3>🔢 Métodos y Códigos</h3>
+                <div id="terms-column"></div>
             </div>
-            <button class="reset-btn" onclick="resetMatching()">🔄 Reiniciar Actividad</button>
-        </section>
-    </div>
+            <div class="matching-column">
+                <h3>📝 Descripciones</h3>
+                <div id="definitions-column"></div>
+            </div>
+        </div>
+
+        <div class="activity-feedback">
+            <div class="feedback-header">
+                <span>✅ Parejas correctas: <strong><span id="matching-correct-count">0</span> / <span id="matching-total-count">8</span></strong></span>
+            </div>
+            <div id="matching-feedback" class="feedback-msg"></div>
+        </div>
+        <button class="reset-btn" onclick="resetMatching()">🔄 Reiniciar Actividad</button>
+    </section>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
-<script src="script.js"></script>
-
-        <!-- ==================== ACTIVIDAD 2: ARRASTRAR Y SOLTAR ==================== -->
-        <section class="activity-card" id="activity2">
-            <h2>🖱️ Actividad 2: Arrastrar y Soltar - Clasifica Sentencias DDL</h2>
-            <p>Arrastra cada sentencia SQL a la operación DDL que le corresponde (CREATE, ALTER o DROP).</p>
-            
-            <div class="drag-drop-container">
-                <div class="items-to-drag" id="drag-items">
-                    <div class="drag-item" draggable="true" data-correct="CREATE">CREATE TABLE usuarios (...)</div>
-                    <div class="drag-item" draggable="true" data-correct="ALTER">ALTER TABLE clientes ADD telefono VARCHAR(15)</div>
-                    <div class="drag-item" draggable="true" data-correct="DROP">DROP DATABASE sistema_ventas</div>
-                    <div class="drag-item" draggable="true" data-correct="CREATE">CREATE INDEX idx_nombre ON empleados(nombre)</div>
-                    <div class="drag-item" draggable="true" data-correct="ALTER">ALTER TABLE productos MODIFY COLUMN precio DECIMAL(10,2)</div>
-                    <div class="drag-item" draggable="true" data-correct="DROP">DROP TABLE temp_logs</div>
-                    <div class="drag-item" draggable="true" data-correct="CREATE">CREATE VIEW vista_activos AS SELECT * FROM usuarios WHERE activo=1</div>
-                    <div class="drag-item" draggable="true" data-correct="ALTER">ALTER TABLE pedidos DROP COLUMN observaciones</div>
-                </div>
-                
-                <div class="drop-zones">
-                    <div class="drop-zone" data-expected="CREATE">
-                        <h3>📌 CREATE</h3>
-                        <div class="drop-area"></div>
-                        <p class="zone-desc">Crear nuevos objetos (tablas, índices, vistas)</p>
-                    </div>
-                    <div class="drop-zone" data-expected="ALTER">
-                        <h3>✏️ ALTER</h3>
-                        <div class="drop-area"></div>
-                        <p class="zone-desc">Modificar estructura existente</p>
-                    </div>
-                    <div class="drop-zone" data-expected="DROP">
-                        <h3>🗑️ DROP</h3>
-                        <div class="drop-area"></div>
-                        <p class="zone-desc">Eliminar objetos permanentemente</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="activity-feedback">
-                <div class="feedback-header">
-                    <span>✅ Elementos colocados correctamente:</span>
-                    <strong><span id="drag-correct-count">0</span> / <span id="drag-total-count">8</span></strong>
-                </div>
-                <div id="drag-errors" class="errors-list"></div>
-            </div>
-            <button class="reset-btn" onclick="resetDragDrop()">🔄 Reiniciar Actividad</button>
-        </section>
-
-        <!-- ==================== ACTIVIDAD 3: UNIR PALABRA - RELACIONAR CONCEPTOS ==================== -->
-        <section class="activity-card" id="activity3">
-            <h2>🔗 Actividad 3: Unir Palabra - Relaciona Conceptos DDL</h2>
-            <p>Haz clic en un término de la izquierda y luego en su definición de la derecha para emparejarlos.</p>
-            <p class="instruction">💡 Los pares correctos se marcarán en verde.</p>
-            
-            <div class="matching-container">
-                <div class="matching-column" id="terms-column">
-                    <h3>📖 Términos DDL</h3>
-                    <div class="matching-item" data-term="CREATE">CREATE</div>
-                    <div class="matching-item" data-term="ALTER">ALTER</div>
-                    <div class="matching-item" data-term="DROP">DROP</div>
-                    <div class="matching-item" data-term="PRIMARY KEY">PRIMARY KEY</div>
-                    <div class="matching-item" data-term="NOT NULL">NOT NULL</div>
-                    <div class="matching-item" data-term="FOREIGN KEY">FOREIGN KEY</div>
-                    <div class="matching-item" data-term="AUTO_INCREMENT">AUTO_INCREMENT</div>
-                    <div class="matching-item" data-term="VARCHAR">VARCHAR</div>
-                </div>
-                
-                <div class="matching-column" id="definitions-column">
-                    <h3>📝 Definiciones</h3>
-                    <div class="matching-item" data-def="CREATE">Crear nuevas tablas, índices o vistas</div>
-                    <div class="matching-item" data-def="ALTER">Modificar la estructura de objetos existentes</div>
-                    <div class="matching-item" data-def="DROP">Eliminar objetos de la base de datos permanentemente</div>
-                    <div class="matching-item" data-def="PRIMARY KEY">Identifica de forma única cada fila; no nulo y único</div>
-                    <div class="matching-item" data-def="NOT NULL">Restricción que impide valores vacíos</div>
-                    <div class="matching-item" data-def="FOREIGN KEY">Establece relación entre tablas</div>
-                    <div class="matching-item" data-def="AUTO_INCREMENT">Genera valores automáticos secuenciales</div>
-                    <div class="matching-item" data-def="VARCHAR">Tipo de dato para texto de longitud variable</div>
-                </div>
-            </div>
-            
-            <div class="activity-feedback">
-                <div class="feedback-header">
-                    <span>✅ Parejas correctas:</span>
-                    <strong><span id="matching-correct-count">0</span> / <span id="matching-total-count">8</span></strong>
-                </div>
-                <div id="matching-errors" class="errors-list"></div>
-            </div>
-            <button class="reset-btn" onclick="resetMatching()">🔄 Reiniciar Actividad</button>
-        </section>
-    </div>
-</body>
-</html>
-<script src="script.js"></script>

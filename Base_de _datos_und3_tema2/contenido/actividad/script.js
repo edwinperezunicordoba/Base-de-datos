@@ -1,929 +1,517 @@
-// ==================== SOPA DE LETRAS ====================
-let wordSearchGrid = [];
-let selectedCells = [];
-let foundWords = new Set();
+// ================================================================
+// TEMA 2: API CRUD Endpoints — Script principal
+// ================================================================
 
-const wordsToFind = ['GET', 'POST', 'PUT', 'DELETE', 'ENDPOINT', 'ROUTE', 'REQUEST', 'RESPONSE', 'STATUS', 'HEADER', 'BODY', 'JSON', 'REST', 'API', 'CRUD', 'METHOD'];
+document.addEventListener('DOMContentLoaded', function () {
+    initWordSearch();
+    initDragDrop();
+    initMatching();
+});
 
-// Generar sopa de letras
-function generateWordSearch() {
-    const size = 18;
-    const grid = Array(size).fill().map(() => Array(size).fill(''));
-    
-    // Colocar palabras automáticamente desde wordsToFind con direcciones aleatorias
-    const words = wordsToFind;
-    const directions = [
-        { name: 'horizontal', dr: 0, dc: 1 },
-        { name: 'vertical', dr: 1, dc: 0 }
-    ];
-    
-    for(let word of words) {
+// ----------------------------------------------------------------
+// UTILIDADES
+// ----------------------------------------------------------------
+function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+// ================================================================
+// ACTIVIDAD 1: SOPA DE LETRAS
+// ================================================================
+const WS_WORDS = ['GET', 'POST', 'PUT', 'DELETE', 'ENDPOINT', 'ROUTE', 'REQUEST', 'RESPONSE', 'STATUS', 'HEADER', 'BODY', 'JSON', 'REST', 'API', 'CRUD', 'METHOD'];
+const WS_SIZE = 18;
+const DIRECTIONS = [
+    [0, 1],   // horizontal →
+    [1, 0],   // vertical ↓
+    [1, 1],   // diagonal ↘
+    [1, -1],  // diagonal ↙
+    [0, -1],  // horizontal ←
+    [-1, 0],  // vertical ↑
+    [-1, -1], // diagonal ↖
+    [-1, 1],  // diagonal ↗
+];
+
+let wsGrid = [];
+let wsPlaced = [];
+
+function initWordSearch() {
+    wsGrid = Array.from({ length: WS_SIZE }, () => Array(WS_SIZE).fill(''));
+    wsPlaced = [];
+
+    const sorted = [...WS_WORDS].sort((a, b) => b.length - a.length);
+    sorted.forEach(word => {
         let placed = false;
-        let attempts = 0;
-        while(!placed && attempts < 100) {
-            const dir = directions[Math.floor(Math.random() * directions.length)];
-            const maxRow = dir.name === 'horizontal' ? size - 1 : size - word.length;
-            const maxCol = dir.name === 'vertical' ? size - 1 : size - word.length;
-            const startRow = Math.floor(Math.random() * (maxRow + 1));
-            const startCol = Math.floor(Math.random() * (maxCol + 1));
-            
-            // Verificar si se puede colocar
-            let canPlace = true;
-            for(let i = 0; i < word.length; i++) {
-                const r = startRow + i * dir.dr;
-                const c = startCol + i * dir.dc;
-                const currentLetter = grid[r][c];
-                if(currentLetter !== '' && currentLetter !== word[i]) {
-                    canPlace = false;
-                    break;
-                }
-            }
-            
-            if(canPlace) {
-                // Colocar la palabra
-                for(let i = 0; i < word.length; i++) {
-                    const r = startRow + i * dir.dr;
-                    const c = startCol + i * dir.dc;
-                    grid[r][c] = word[i];
-                }
+        const dirs = shuffle(DIRECTIONS);
+        for (let attempt = 0; attempt < 200 && !placed; attempt++) {
+            const [dr, dc] = dirs[attempt % dirs.length];
+            const row = Math.floor(Math.random() * WS_SIZE);
+            const col = Math.floor(Math.random() * WS_SIZE);
+            if (canPlace(word, row, col, dr, dc)) {
+                placeWord(word, row, col, dr, dc);
+                wsPlaced.push({ word, row, col, dr, dc });
                 placed = true;
             }
-            attempts++;
         }
-        // Si no se pudo colocar después de intentos, intentar forzar en una posición fija (último recurso)
-        if(!placed) {
-            // Colocar horizontal en la primera fila disponible
-            let startRow = 0;
-            while(startRow < size && grid[startRow][0] !== '') startRow++;
-            if(startRow < size) {
-                for(let i = 0; i < Math.min(word.length, size); i++) {
-                    grid[startRow][i] = word[i];
-                }
-            }
-        }
+    });
+
+    fillRandom();
+    renderGrid();
+    renderWordList();
+    setupSelection();
+    updateFoundCount();
+}
+
+function canPlace(word, row, col, dr, dc) {
+    for (let i = 0; i < word.length; i++) {
+        const r = row + dr * i;
+        const c = col + dc * i;
+        if (r < 0 || r >= WS_SIZE || c < 0 || c >= WS_SIZE) return false;
+        if (wsGrid[r][c] && wsGrid[r][c] !== word[i]) return false;
     }
-    
-    // Rellenar con letras aleatorias
+    return true;
+}
+
+function placeWord(word, row, col, dr, dc) {
+    for (let i = 0; i < word.length; i++) {
+        wsGrid[row + dr * i][col + dc * i] = word[i];
+    }
+}
+
+function fillRandom() {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for(let i = 0; i < size; i++) {
-        for(let j = 0; j < size; j++) {
-            if(!grid[i][j]) {
-                grid[i][j] = letters[Math.floor(Math.random() * letters.length)];
-            }
-        }
-    }
-    
-    wordSearchGrid = grid;
-    renderWordSearch();
+    for (let r = 0; r < WS_SIZE; r++)
+        for (let c = 0; c < WS_SIZE; c++)
+            if (!wsGrid[r][c]) wsGrid[r][c] = letters[Math.floor(Math.random() * 26)];
 }
 
-function renderWordSearch() {
+function renderGrid() {
     const container = document.getElementById('wordsearch-container');
-    const gridSize = wordSearchGrid.length;
-    
-    let html = '<div class="wordsearch-grid">';
-    for(let i = 0; i < gridSize; i++) {
-        for(let j = 0; j < gridSize; j++) {
-            const isFound = isCellInFoundWords(i, j);
-            html += `<div class="grid-cell ${isFound ? 'found' : ''}" data-row="${i}" data-col="${j}" onclick="selectCell(${i}, ${j})">${wordSearchGrid[i][j]}</div>`;
+    container.innerHTML = '';
+    const gridEl = document.createElement('div');
+    gridEl.className = 'wordsearch-grid';
+    gridEl.style.gridTemplateColumns = `repeat(${WS_SIZE}, 34px)`;
+
+    for (let r = 0; r < WS_SIZE; r++) {
+        for (let c = 0; c < WS_SIZE; c++) {
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell';
+            cell.textContent = wsGrid[r][c];
+            cell.dataset.row = r;
+            cell.dataset.col = c;
+            gridEl.appendChild(cell);
         }
     }
-    html += '</div>';
-    container.innerHTML = html;
-    updateWordListUI();
+    container.appendChild(gridEl);
 }
 
-function isCellInFoundWords(row, col) {
-    for(let word of foundWords) {
-        const pos = getWordPositions(word);
-        if(pos) {
-            for(let p of pos) {
-                if(p.row === row && p.col === col) return true;
-            }
-        }
-    }
-    return false;
-}
-
-function getWordPositions(word) {
-    const positions = [];
-    const grid = wordSearchGrid;
-    
-    // Buscar horizontal
-    for(let i = 0; i < grid.length; i++) {
-        for(let j = 0; j <= grid.length - word.length; j++) {
-            let match = true;
-            for(let k = 0; k < word.length; k++) {
-                if(grid[i][j+k] !== word[k]) {
-                    match = false;
-                    break;
-                }
-            }
-            if(match) {
-                for(let k = 0; k < word.length; k++) {
-                    positions.push({row: i, col: j+k});
-                }
-                return positions;
-            }
-        }
-    }
-    
-    // Buscar vertical
-    for(let i = 0; i <= grid.length - word.length; i++) {
-        for(let j = 0; j < grid.length; j++) {
-            let match = true;
-            for(let k = 0; k < word.length; k++) {
-                if(grid[i+k][j] !== word[k]) {
-                    match = false;
-                    break;
-                }
-            }
-            if(match) {
-                for(let k = 0; k < word.length; k++) {
-                    positions.push({row: i+k, col: j});
-                }
-                return positions;
-            }
-        }
-    }
-    
-    return null;
-}
-
-function selectCell(row, col) {
-    const cell = document.querySelector(`.grid-cell[data-row="${row}"][data-col="${col}"]`);
-    if(cell.classList.contains('found')) return;
-    
-    if(cell.classList.contains('selected')) {
-        cell.classList.remove('selected');
-        selectedCells = selectedCells.filter(c => !(c.row === row && c.col === col));
-    } else {
-        cell.classList.add('selected');
-        selectedCells.push({row, col});
-    }
-    
-    checkSelectedWord();
-}
-
-function checkSelectedWord() {
-    if(selectedCells.length < 3) return;
-    
-    // Ordenar celdas por fila y columna
-    const sorted = [...selectedCells].sort((a,b) => {
-        if(a.row === b.row) return a.col - b.col;
-        if(a.col === b.col) return a.row - b.row;
-        return 0;
+function renderWordList() {
+    const ul = document.getElementById('words-to-find');
+    ul.innerHTML = '';
+    WS_WORDS.forEach(w => {
+        const li = document.createElement('li');
+        li.dataset.word = w;
+        li.textContent = w;
+        ul.appendChild(li);
     });
-    
-    // Verificar si están en la misma fila o columna
-    const sameRow = sorted.every(cell => cell.row === sorted[0].row);
-    const sameCol = sorted.every(cell => cell.col === sorted[0].col);
-    
-    if(!sameRow && !sameCol) {
-        // No limpiar selección, permitir al usuario corregir
-        return;
-    }
-    
-    let word = '';
-    for(let cell of sorted) {
-        word += wordSearchGrid[cell.row][cell.col];
-    }
-    
-    // Buscar la palabra
-    const foundWord = wordsToFind.find(w => w === word);
-    if(foundWord && !foundWords.has(foundWord)) {
-        foundWords.add(foundWord);
-        markWordAsFound(sorted);
-        updateCounters();
-    }
+    document.getElementById('total-words').textContent = WS_WORDS.length;
 }
 
-function markWordAsFound(cells) {
-    for(let cell of cells) {
-        const cellDiv = document.querySelector(`.grid-cell[data-row="${cell.row}"][data-col="${cell.col}"]`);
-        cellDiv.classList.add('found');
-        cellDiv.classList.remove('selected');
-    }
-    selectedCells = [];
-    updateWordListUI();
-}
+function setupSelection() {
+    const container = document.querySelector('.wordsearch-grid');
+    let selecting = false;
+    let startCell = null;
+    let currentCells = [];
 
-function clearSelection() {
-    selectedCells.forEach(cell => {
-        const cellDiv = document.querySelector(`.grid-cell[data-row="${cell.row}"][data-col="${cell.col}"]`);
-        cellDiv.classList.remove('selected');
+    container.addEventListener('mousedown', e => {
+        const cell = e.target.closest('.grid-cell');
+        if (!cell) return;
+        selecting = true;
+        startCell = cell;
+        currentCells = [cell];
+        highlightCells(currentCells);
+        e.preventDefault();
     });
-    selectedCells = [];
-}
 
-function updateWordListUI() {
-    const items = document.querySelectorAll('#words-to-find li');
-    items.forEach(item => {
-        const word = item.getAttribute('data-word');
-        if(foundWords.has(word)) {
-            item.classList.add('found-word');
-        } else {
-            item.classList.remove('found-word');
-        }
+    container.addEventListener('mouseover', e => {
+        if (!selecting) return;
+        const cell = e.target.closest('.grid-cell');
+        if (!cell || cell === startCell) return;
+
+        const r1 = +startCell.dataset.row, c1 = +startCell.dataset.col;
+        const r2 = +cell.dataset.row, c2 = +cell.dataset.col;
+        currentCells = getCellsInLine(r1, c1, r2, c2);
+        highlightCells(currentCells);
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (!selecting) return;
+        selecting = false;
+        if (currentCells.length >= 2) checkSelection(currentCells);
+        clearHighlight();
+        currentCells = [];
+        startCell = null;
+    });
+
+    // Touch support
+    container.addEventListener('touchstart', e => {
+        const touch = e.touches[0];
+        const cell = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.grid-cell');
+        if (!cell) return;
+        selecting = true;
+        startCell = cell;
+        currentCells = [cell];
+        highlightCells(currentCells);
+        e.preventDefault();
+    }, { passive: false });
+
+    container.addEventListener('touchmove', e => {
+        if (!selecting) return;
+        const touch = e.touches[0];
+        const cell = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.grid-cell');
+        if (!cell || cell === startCell) return;
+        const r1 = +startCell.dataset.row, c1 = +startCell.dataset.col;
+        const r2 = +cell.dataset.row, c2 = +cell.dataset.col;
+        currentCells = getCellsInLine(r1, c1, r2, c2);
+        highlightCells(currentCells);
+        e.preventDefault();
+    }, { passive: false });
+
+    container.addEventListener('touchend', () => {
+        if (!selecting) return;
+        selecting = false;
+        if (currentCells.length >= 2) checkSelection(currentCells);
+        clearHighlight();
+        currentCells = [];
+        startCell = null;
     });
 }
 
-function updateCounters() {
-    const found = foundWords.size;
-    const total = wordsToFind.length;
+function getCellsInLine(r1, c1, r2, c2) {
+    const dr = Math.sign(r2 - r1);
+    const dc = Math.sign(c2 - c1);
+    const cells = [];
+    const gridEl = document.querySelector('.wordsearch-grid');
+    const all = gridEl.querySelectorAll('.grid-cell');
+    const map = {};
+    all.forEach(c => { map[`${c.dataset.row},${c.dataset.col}`] = c; });
+
+    let r = r1, c = c1;
+    while (true) {
+        const key = `${r},${c}`;
+        if (map[key]) cells.push(map[key]);
+        if (r === r2 && c === c2) break;
+        r += dr;
+        c += dc;
+        if (Math.abs(r - r1) > WS_SIZE || Math.abs(c - c1) > WS_SIZE) break;
+    }
+    return cells;
+}
+
+function highlightCells(cells) {
+    document.querySelectorAll('.grid-cell.selecting').forEach(c => c.classList.remove('selecting'));
+    cells.forEach(c => { if (!c.classList.contains('found')) c.classList.add('selecting'); });
+}
+
+function clearHighlight() {
+    document.querySelectorAll('.grid-cell.selecting').forEach(c => c.classList.remove('selecting'));
+}
+
+function checkSelection(cells) {
+    const word = cells.map(c => c.textContent).join('');
+    const rev = word.split('').reverse().join('');
+    const match = WS_WORDS.find(w => w === word || w === rev);
+    if (!match) return;
+    const alreadyFound = cells.every(c => c.classList.contains('found'));
+    if (alreadyFound) return;
+
+    cells.forEach(c => c.classList.add('found'));
+    const li = document.querySelector(`#words-to-find [data-word="${match}"]`);
+    if (li && !li.classList.contains('found')) li.classList.add('found');
+
+    updateFoundCount();
+}
+
+function updateFoundCount() {
+    const found = document.querySelectorAll('#words-to-find li.found').length;
     document.getElementById('found-count').textContent = found;
-    document.getElementById('total-words').textContent = total;
-    
-    const errorsDiv = document.getElementById('wordsearch-errors');
-    const missing = wordsToFind.filter(w => !foundWords.has(w));
-    if(missing.length > 0) {
-        errorsDiv.innerHTML = `<div class="error-item">⚠️ Palabras por encontrar: ${missing.join(', ')}</div>`;
+    const fb = document.getElementById('wordsearch-feedback');
+    if (found === WS_WORDS.length) {
+        fb.className = 'feedback-msg success';
+        fb.innerHTML = '🎉 ¡Felicitaciones! Encontraste todas las palabras. Recuerda: GET recupera datos, POST crea recursos, PUT actualiza y DELETE elimina.';
+    } else if (found >= 10) {
+        fb.className = 'feedback-msg info';
+        fb.innerHTML = `👏 ¡Muy bien! Ya encontraste ${found} palabras. Sigue buscando los términos restantes.`;
     } else {
-        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Felicidades! Encontraste todas las palabras sobre APIs y endpoints.</div>';
+        fb.className = '';
+        fb.innerHTML = '';
     }
 }
 
 function resetWordSearch() {
-    foundWords.clear();
-    selectedCells = [];
-    generateWordSearch();
-    updateCounters();
+    initWordSearch();
 }
 
-// ==================== ARRASTRAR Y SOLTAR ====================
-let currentDragItem = null;
+// ================================================================
+// ACTIVIDAD 2: ARRASTRAR Y SOLTAR
+// ================================================================
+const DRAG_DATA = [
+    { text: 'Obtener todos los usuarios de la base de datos', correct: 'GET', hint: 'GET se usa para recuperar/leer información.' },
+    { text: 'Obtener un usuario específico por su ID', correct: 'GET', hint: 'GET también recupera un único recurso pasando su identificador.' },
+    { text: 'Crear un nuevo usuario en la base de datos', correct: 'POST', hint: 'POST envía datos al servidor para crear un recurso nuevo.' },
+    { text: 'Actualizar completamente la información de un usuario', correct: 'PUT', hint: 'PUT reemplaza el recurso completo con los nuevos datos.' },
+    { text: 'Eliminar un usuario de la base de datos', correct: 'DELETE', hint: 'DELETE borra el recurso indicado en la URL.' },
+    { text: 'Actualizar parcialmente algunos campos de un usuario', correct: 'PATCH', hint: 'PATCH modifica solo los campos enviados, no el recurso completo.' },
+    { text: 'Verificar si un endpoint está funcionando (health check)', correct: 'GET', hint: 'Una petición GET simple comprueba la disponibilidad del servidor.' },
+    { text: 'Enviar datos de login para autenticación', correct: 'POST', hint: 'Las credenciales se envían en el cuerpo de una petición POST.' },
+];
+
+const DROP_ZONES_DEF = [
+    { id: 'GET', label: '📖 GET', desc: 'Leer / Recuperar datos' },
+    { id: 'POST', label: '📝 POST', desc: 'Crear nuevo recurso' },
+    { id: 'PUT', label: '🔄 PUT', desc: 'Actualizar completamente' },
+    { id: 'PATCH', label: '✏️ PATCH', desc: 'Actualizar parcialmente' },
+    { id: 'DELETE', label: '🗑️ DELETE', desc: 'Eliminar recurso' },
+];
+
+let draggedEl = null;
+let dragData2 = [];
 
 function initDragDrop() {
-    const draggables = document.querySelectorAll('.drag-item');
-    const dropZones = document.querySelectorAll('.drop-zone .drop-area');
-    
-    draggables.forEach(drag => {
-        drag.setAttribute('draggable', 'true');
-        drag.addEventListener('dragstart', handleDragStart);
-        drag.addEventListener('dragend', handleDragEnd);
+    dragData2 = shuffle(DRAG_DATA);
+    const itemsContainer = document.getElementById('drag-items-2');
+    const zonesContainer = document.getElementById('drop-zones-2');
+    itemsContainer.innerHTML = '';
+    zonesContainer.innerHTML = '';
+
+    dragData2.forEach((d, i) => {
+        const el = document.createElement('div');
+        el.className = 'drag-item';
+        el.draggable = true;
+        el.dataset.correct = d.correct;
+        el.dataset.hint = d.hint;
+        el.dataset.id = i;
+        el.textContent = d.text;
+        el.addEventListener('dragstart', onDragStart);
+        el.addEventListener('dragend', onDragEnd);
+        itemsContainer.appendChild(el);
     });
-    
-    dropZones.forEach(zone => {
-        zone.addEventListener('dragover', handleDragOver);
-        zone.addEventListener('drop', handleDrop);
+
+    DROP_ZONES_DEF.forEach(z => {
+        const zone = document.createElement('div');
+        zone.className = 'drop-zone';
+        zone.dataset.expected = z.id;
+        zone.innerHTML = `<h3>${z.label}</h3><p class="zone-desc">${z.desc}</p><div class="drop-area"></div>`;
+        const area = zone.querySelector('.drop-area');
+        area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-over'); });
+        area.addEventListener('dragleave', () => area.classList.remove('drag-over'));
+        area.addEventListener('drop', e => onDrop(e, zone, area));
+        zonesContainer.appendChild(zone);
     });
-    
-    updateDragCounters();
+
+    updateDragCount();
 }
 
-function handleDragStart(e) {
-    currentDragItem = this;
-    this.classList.add('dragging');
-    e.dataTransfer.setData('text/plain', this.textContent);
+function onDragStart(e) {
+    draggedEl = e.currentTarget;
+    e.currentTarget.classList.add('dragging');
     e.dataTransfer.effectAllowed = 'move';
 }
-
-function handleDragEnd(e) {
-    if(currentDragItem) {
-        currentDragItem.classList.remove('dragging');
-        currentDragItem = null;
-    }
+function onDragEnd(e) {
+    e.currentTarget.classList.remove('dragging');
 }
 
-function handleDragOver(e) {
+function onDrop(e, zone, area) {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-}
+    area.classList.remove('drag-over');
+    if (!draggedEl || area.querySelector('.drag-item')) return;
 
-function handleDrop(e) {
-    e.preventDefault();
-    if(!currentDragItem) return;
-    
-    const dropZone = this;
-    const parentZone = dropZone.closest('.drop-zone');
-    const expectedType = parentZone.getAttribute('data-expected');
-    const correctType = currentDragItem.getAttribute('data-correct');
-    
-    if(currentDragItem.classList.contains('dropped')) {
-        return;
-    }
-    
-    if(expectedType === correctType) {
-        const clonedItem = currentDragItem.cloneNode(true);
-        clonedItem.classList.add('dropped');
-        clonedItem.setAttribute('draggable', 'false');
-        clonedItem.style.opacity = '0.7';
-        clonedItem.style.cursor = 'default';
-        dropZone.appendChild(clonedItem);
-        currentDragItem.style.display = 'none';
-        currentDragItem.classList.add('dropped');
+    const expected = zone.dataset.expected;
+    const correct = draggedEl.dataset.correct;
+    const hint = draggedEl.dataset.hint;
+
+    const clone = draggedEl.cloneNode(true);
+    clone.removeEventListener('dragstart', onDragStart);
+    clone.draggable = false;
+    clone.style.cursor = 'default';
+    area.appendChild(clone);
+
+    if (expected === correct) {
+        zone.classList.add('correct');
+        clone.classList.add('correct');
+        showDragFeedback(`✅ ¡Correcto! "${draggedEl.textContent}" pertenece a <strong>${correct}</strong>. ${hint}`, 'success');
     } else {
-        showDragError(currentDragItem.textContent, expectedType);
+        zone.classList.add('incorrect');
+        clone.classList.add('incorrect');
+        showDragFeedback(`❌ Incorrecto. "${draggedEl.textContent}" pertenece a <strong>${correct}</strong>, no a ${expected}. ${hint}`, 'error');
     }
-    
-    updateDragCounters();
+
+    draggedEl.style.display = 'none';
+    draggedEl = null;
+    updateDragCount();
 }
 
-function showDragError(itemText, expected) {
-    const correctType = currentDragItem.getAttribute('data-correct');
-    const errorsDiv = document.getElementById('drag-errors');
-    const errorMsg = document.createElement('div');
-    errorMsg.className = 'error-item';
-    errorMsg.textContent = `❌ Esa descripción pertenece al método "${correctType}", no a "${expected}"`;
-    errorsDiv.appendChild(errorMsg);
-    setTimeout(() => {
-        errorMsg.remove();
-    }, 3000);
+function showDragFeedback(msg, type) {
+    const fb = document.getElementById('drag-feedback');
+    fb.className = `feedback-msg ${type}`;
+    fb.innerHTML = msg;
 }
 
-function updateDragCounters() {
-    const allItems = document.querySelectorAll('#drag-items .drag-item');
-    const droppedItems = document.querySelectorAll('#drag-items .drag-item[style*="display: none"]');
-    const correctCount = droppedItems.length;
-    const total = allItems.length;
-    
-    document.getElementById('drag-correct-count').textContent = correctCount;
-    document.getElementById('drag-total-count').textContent = total;
-    
-    const errorsDiv = document.getElementById('drag-errors');
-    if(correctCount === total && total > 0) {
-        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Excelente! Todas las descripciones están correctamente clasificadas.</div>';
-    } else {
-        const pending = total - correctCount;
-        if(pending > 0 && pending !== total) {
-            errorsDiv.innerHTML = `<div class="error-item">📌 Faltan colocar ${pending} descripción(es) correctamente.</div>`;
-        }
+function updateDragCount() {
+    const correct = document.querySelectorAll('#drop-zones-2 .drop-zone.correct').length;
+    document.getElementById('drag-correct-count').textContent = correct;
+    document.getElementById('drag-total-count').textContent = DRAG_DATA.length;
+
+    if (correct === DRAG_DATA.length) {
+        showDragFeedback('🎉 ¡Excelente! Clasificaste todos los métodos HTTP correctamente. GET=leer, POST=crear, PUT=actualizar completo, PATCH=actualizar parcial, DELETE=eliminar.', 'success');
     }
 }
 
 function resetDragDrop() {
-    location.reload();
+    initDragDrop();
 }
 
-// ==================== UNIR PALABRAS (MATCHING) ====================
-let selectedTerm = null;
-let matchedPairs = new Set();
+// ================================================================
+// ACTIVIDAD 3: UNIR PALABRAS
+// ================================================================
+const MATCH_PAIRS = [
+    { term: 'GET', def: '200 OK — Recupera el recurso solicitado', hint: 'GET devuelve datos existentes con código 200.' },
+    { term: 'POST', def: '201 Created — Crea un recurso nuevo', hint: 'POST crea un recurso y responde con 201.' },
+    { term: 'PUT', def: '200 OK — Actualiza el recurso completo', hint: 'PUT reemplaza el recurso y devuelve 200.' },
+    { term: 'DELETE', def: '204 No Content — Elimina el recurso', hint: 'DELETE borra el recurso y responde 204 (sin cuerpo).' },
+    { term: 'Error 400', def: '400 Bad Request — Solicitud mal formada', hint: 'El cliente envió datos incorrectos o incompletos.' },
+    { term: 'Error 401', def: '401 Unauthorized — Sin autenticación', hint: 'El usuario no está autenticado (falta token/sesión).' },
+    { term: 'Error 404', def: '404 Not Found — Recurso no encontrado', hint: 'La URL o el ID solicitado no existe en el servidor.' },
+    { term: 'Error 500', def: '500 Internal Server Error — Fallo del servidor', hint: 'Error inesperado en el servidor, no del cliente.' },
+];
+
+let matchSelected = null;
+let matchPairs = [];
 
 function initMatching() {
-    // Barajar las definiciones para orden aleatorio
-    const defColumn = document.getElementById('definitions-column');
-    const definitions = Array.from(defColumn.querySelectorAll('.matching-item'));
-    const shuffledDefs = definitions.sort(() => Math.random() - 0.5);
-    defColumn.innerHTML = '<h3>📝 Descripciones</h3>';
-    shuffledDefs.forEach(def => defColumn.appendChild(def));
-    
-    const terms = document.querySelectorAll('#terms-column .matching-item');
-    const defs = document.querySelectorAll('#definitions-column .matching-item');
-    
-    terms.forEach(term => {
-        term.addEventListener('click', () => handleTermClick(term));
+    matchPairs = [...MATCH_PAIRS];
+    matchSelected = null;
+
+    const termsShuffled = shuffle(matchPairs.map(p => p.term));
+    const defsShuffled = shuffle(matchPairs.map(p => p.def));
+
+    const termsCol = document.getElementById('terms-column');
+    const defsCol = document.getElementById('definitions-column');
+    termsCol.innerHTML = '';
+    defsCol.innerHTML = '';
+
+    termsShuffled.forEach(term => {
+        const el = document.createElement('div');
+        el.className = 'matching-item';
+        el.dataset.term = term;
+        el.textContent = term;
+        el.addEventListener('click', () => onMatchClick(el));
+        termsCol.appendChild(el);
     });
-    
-    defs.forEach(def => {
-        def.addEventListener('click', () => handleDefClick(def));
+
+    defsShuffled.forEach(def => {
+        const pair = matchPairs.find(p => p.def === def);
+        const el = document.createElement('div');
+        el.className = 'matching-item';
+        el.dataset.def = def;
+        el.dataset.term = pair.term;
+        el.textContent = def;
+        el.addEventListener('click', () => onMatchClick(el));
+        defsCol.appendChild(el);
     });
-    
-    updateMatchingCounters();
+
+    document.getElementById('matching-total-count').textContent = MATCH_PAIRS.length;
+    updateMatchingCount();
 }
 
-function handleTermClick(term) {
-    if(term.classList.contains('matched')) return;
-    
-    document.querySelectorAll('.matching-item.selected').forEach(item => {
-        item.classList.remove('selected');
-    });
-    
-    term.classList.add('selected');
-    selectedTerm = term;
-}
+function onMatchClick(el) {
+    if (el.classList.contains('correct')) return;
 
-function handleDefClick(def) {
-    if(def.classList.contains('matched')) return;
-    
-    if(selectedTerm && !selectedTerm.classList.contains('matched')) {
-        const termWord = selectedTerm.getAttribute('data-term');
-        const defText = def.getAttribute('data-def');
-        
-        if(termWord === defText) {
-            selectedTerm.classList.add('matched');
-            def.classList.add('matched');
-            selectedTerm.classList.remove('selected');
-            matchedPairs.add(termWord);
-            updateMatchingCounters();
-        } else {
-            showMatchingError(termWord, defText);
-        }
-        selectedTerm = null;
-    } else if(selectedTerm && selectedTerm.classList.contains('matched')) {
-        selectedTerm = null;
-    } else {
-        document.querySelectorAll('.matching-item.selected').forEach(item => {
-            item.classList.remove('selected');
-        });
-        def.classList.add('selected');
-        selectedTerm = def;
+    if (!matchSelected) {
+        matchSelected = el;
+        el.classList.add('selected');
+        return;
     }
-}
 
-function showMatchingError(term, definition) {
-    const errorsDiv = document.getElementById('matching-errors');
-    const errorMsg = document.createElement('div');
-    errorMsg.className = 'error-item';
-    errorMsg.textContent = `❌ "${term}" no coincide con esa descripción. Intenta de nuevo.`;
-    errorsDiv.appendChild(errorMsg);
-    setTimeout(() => {
-        errorMsg.remove();
-    }, 3000);
-}
+    if (matchSelected === el) {
+        el.classList.remove('selected');
+        matchSelected = null;
+        return;
+    }
 
-function updateMatchingCounters() {
-    const total = 8;
-    const correct = matchedPairs.size;
-    document.getElementById('matching-correct-count').textContent = correct;
-    document.getElementById('matching-total-count').textContent = total;
-    
-    const errorsDiv = document.getElementById('matching-errors');
-    if(correct === total) {
-        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Perfecto! Todos los códigos de estado HTTP están correctamente emparejados. Ahora comprendes mejor las respuestas de las APIs.</div>';
+    // Ambos seleccionados: verificar
+    const second = el;
+    second.classList.add('selected');
+
+    const term1 = matchSelected.dataset.term || null;
+    const def1 = matchSelected.dataset.def || null;
+    const term2 = second.dataset.term || null;
+    const def2 = second.dataset.def || null;
+
+    // Uno debe ser término y otro definición
+    let termEl, defEl;
+    if (matchSelected.dataset.term && matchSelected.dataset.def === undefined) {
+        // selected is term
+        termEl = matchSelected; defEl = second;
+    } else if (second.dataset.term && second.dataset.def === undefined) {
+        termEl = second; defEl = matchSelected;
     } else {
-        const pending = total - correct;
-        errorsDiv.innerHTML = `<div class="error-item">📌 Faltan emparejar ${pending} código(s) de estado.</div>`;
+        // Both same type or mixed: use dataset.term on both
+        // defEl has data-def, termEl has data-term only
+        if (matchSelected.hasAttribute('data-def')) {
+            defEl = matchSelected; termEl = second;
+        } else {
+            termEl = matchSelected; defEl = second;
+        }
+    }
+
+    // Normalize: term side items have only data-term, def side have data-def AND data-term (set during init)
+    const termKey = termEl.dataset.term;
+    const defKey = defEl.dataset.term; // we store the matching term on def items too
+
+    const isCorrect = termKey === defKey;
+    const pair = MATCH_PAIRS.find(p => p.term === termKey);
+
+    if (isCorrect) {
+        termEl.classList.add('correct');
+        defEl.classList.add('correct');
+        termEl.classList.remove('selected');
+        defEl.classList.remove('selected');
+        showMatchFeedback(`✅ ¡Correcto! <strong>${pair.term}</strong>: ${pair.hint}`, 'success');
+        updateMatchingCount();
+    } else {
+        termEl.classList.add('incorrect');
+        defEl.classList.add('incorrect');
+        showMatchFeedback(`❌ Combinación incorrecta. ${pair ? pair.hint : 'Intenta relacionar cada método con su código de respuesta.'}`, 'error');
+        setTimeout(() => {
+            termEl.classList.remove('selected', 'incorrect');
+            defEl.classList.remove('selected', 'incorrect');
+        }, 1200);
+    }
+
+    matchSelected = null;
+}
+
+function showMatchFeedback(msg, type) {
+    const fb = document.getElementById('matching-feedback');
+    fb.className = `feedback-msg ${type}`;
+    fb.innerHTML = msg;
+}
+
+function updateMatchingCount() {
+    const correct = document.querySelectorAll('#terms-column .matching-item.correct').length;
+    document.getElementById('matching-correct-count').textContent = correct;
+    if (correct === MATCH_PAIRS.length) {
+        showMatchFeedback('🎉 ¡Perfecto! Emparejaste todos los métodos HTTP con sus códigos de estado. ¡Dominas los fundamentos de REST!', 'success');
     }
 }
 
 function resetMatching() {
-    matchedPairs.clear();
-    selectedTerm = null;
-    document.querySelectorAll('.matching-item').forEach(item => {
-        item.classList.remove('matched', 'selected');
-    });
-    updateMatchingCounters();
-    document.getElementById('matching-errors').innerHTML = '';
-}
-
-// ==================== INICIALIZACIÓN ====================
-document.addEventListener('DOMContentLoaded', () => {
-    generateWordSearch();
-    initDragDrop();
     initMatching();
-    document.getElementById('total-words').textContent = wordsToFind.length;
-    document.getElementById('drag-total-count').textContent = document.querySelectorAll('#drag-items .drag-item').length;
-    document.getElementById('matching-total-count').textContent = '8';
-});
-
-// Generar sopa de letras
-function generateWordSearch() {
-    const size = 12;
-    const grid = Array(size).fill().map(() => Array(size).fill(''));
-    
-    // Colocar palabras automáticamente desde wordsToFind con direcciones aleatorias
-    const words = wordsToFind;
-    const directions = [
-        { name: 'horizontal', dr: 0, dc: 1 },
-        { name: 'vertical', dr: 1, dc: 0 }
-    ];
-    
-    for(let word of words) {
-        let placed = false;
-        let attempts = 0;
-        while(!placed && attempts < 100) {
-            const dir = directions[Math.floor(Math.random() * directions.length)];
-            const maxRow = dir.name === 'horizontal' ? size - 1 : size - word.length;
-            const maxCol = dir.name === 'vertical' ? size - 1 : size - word.length;
-            const startRow = Math.floor(Math.random() * (maxRow + 1));
-            const startCol = Math.floor(Math.random() * (maxCol + 1));
-            
-            // Verificar si se puede colocar
-            let canPlace = true;
-            for(let i = 0; i < word.length; i++) {
-                const r = startRow + i * dir.dr;
-                const c = startCol + i * dir.dc;
-                const currentLetter = grid[r][c];
-                if(currentLetter !== '' && currentLetter !== word[i]) {
-                    canPlace = false;
-                    break;
-                }
-            }
-            
-            if(canPlace) {
-                // Colocar la palabra
-                for(let i = 0; i < word.length; i++) {
-                    const r = startRow + i * dir.dr;
-                    const c = startCol + i * dir.dc;
-                    grid[r][c] = word[i];
-                }
-                placed = true;
-            }
-            attempts++;
-        }
-        // Si no se pudo colocar después de intentos, intentar forzar en una posición fija (último recurso)
-        if(!placed) {
-            // Colocar horizontal en la primera fila disponible
-            let startRow = 0;
-            while(startRow < size && grid[startRow][0] !== '') startRow++;
-            if(startRow < size) {
-                for(let i = 0; i < Math.min(word.length, size); i++) {
-                    grid[startRow][i] = word[i];
-                }
-            }
-        }
-    }
-    
-    // Rellenar con letras aleatorias
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for(let i = 0; i < size; i++) {
-        for(let j = 0; j < size; j++) {
-            if(!grid[i][j]) {
-                grid[i][j] = letters[Math.floor(Math.random() * letters.length)];
-            }
-        }
-    }
-    
-    wordSearchGrid = grid;
-    renderWordSearch();
+    document.getElementById('matching-feedback').className = '';
+    document.getElementById('matching-feedback').innerHTML = '';
 }
-
-function renderWordSearch() {
-    const container = document.getElementById('wordsearch-container');
-    const gridSize = wordSearchGrid.length;
-    
-    let html = '<div class="wordsearch-grid">';
-    for(let i = 0; i < gridSize; i++) {
-        for(let j = 0; j < gridSize; j++) {
-            const isFound = isCellInFoundWords(i, j);
-            html += `<div class="grid-cell ${isFound ? 'found' : ''}" data-row="${i}" data-col="${j}" onclick="selectCell(${i}, ${j})">${wordSearchGrid[i][j]}</div>`;
-        }
-    }
-    html += '</div>';
-    container.innerHTML = html;
-    updateWordListUI();
-}
-
-function isCellInFoundWords(row, col) {
-    for(let word of foundWords) {
-        const pos = getWordPositions(word);
-        if(pos) {
-            for(let p of pos) {
-                if(p.row === row && p.col === col) return true;
-            }
-        }
-    }
-    return false;
-}
-
-function getWordPositions(word) {
-    const positions = [];
-    const grid = wordSearchGrid;
-    
-    // Buscar horizontal
-    for(let i = 0; i < grid.length; i++) {
-        for(let j = 0; j <= grid.length - word.length; j++) {
-            let match = true;
-            for(let k = 0; k < word.length; k++) {
-                if(grid[i][j+k] !== word[k]) {
-                    match = false;
-                    break;
-                }
-            }
-            if(match) {
-                for(let k = 0; k < word.length; k++) {
-                    positions.push({row: i, col: j+k});
-                }
-                return positions;
-            }
-        }
-    }
-    
-    // Buscar vertical
-    for(let i = 0; i <= grid.length - word.length; i++) {
-        for(let j = 0; j < grid.length; j++) {
-            let match = true;
-            for(let k = 0; k < word.length; k++) {
-                if(grid[i+k][j] !== word[k]) {
-                    match = false;
-                    break;
-                }
-            }
-            if(match) {
-                for(let k = 0; k < word.length; k++) {
-                    positions.push({row: i+k, col: j});
-                }
-                return positions;
-            }
-        }
-    }
-    
-    return null;
-}
-
-function selectCell(row, col) {
-    const cell = document.querySelector(`.grid-cell[data-row="${row}"][data-col="${col}"]`);
-    if(cell.classList.contains('found')) return;
-    
-    if(cell.classList.contains('selected')) {
-        cell.classList.remove('selected');
-        selectedCells = selectedCells.filter(c => !(c.row === row && c.col === col));
-    } else {
-        cell.classList.add('selected');
-        selectedCells.push({row, col});
-    }
-    
-    checkSelectedWord();
-}
-
-function checkSelectedWord() {
-    if(selectedCells.length < 3) return;
-    
-    // Ordenar celdas por fila y columna
-    const sorted = [...selectedCells].sort((a,b) => {
-        if(a.row === b.row) return a.col - b.col;
-        if(a.col === b.col) return a.row - b.row;
-        return 0;
-    });
-    
-    // Verificar si están en la misma fila o columna
-    const sameRow = sorted.every(cell => cell.row === sorted[0].row);
-    const sameCol = sorted.every(cell => cell.col === sorted[0].col);
-    
-    if(!sameRow && !sameCol) {
-        // No limpiar selección, permitir al usuario corregir
-        return;
-    }
-    
-    let word = '';
-    for(let cell of sorted) {
-        word += wordSearchGrid[cell.row][cell.col];
-    }
-    
-    // Buscar la palabra
-    const foundWord = wordsToFind.find(w => w === word);
-    if(foundWord && !foundWords.has(foundWord)) {
-        foundWords.add(foundWord);
-        markWordAsFound(sorted);
-        updateCounters();
-    }
-    // Remover el else que limpiaba la selección
-}
-
-function markWordAsFound(cells) {
-    for(let cell of cells) {
-        const cellDiv = document.querySelector(`.grid-cell[data-row="${cell.row}"][data-col="${cell.col}"]`);
-        cellDiv.classList.add('found');
-        cellDiv.classList.remove('selected');
-    }
-    selectedCells = [];
-    updateWordListUI();
-}
-
-function clearSelection() {
-    selectedCells.forEach(cell => {
-        const cellDiv = document.querySelector(`.grid-cell[data-row="${cell.row}"][data-col="${cell.col}"]`);
-        cellDiv.classList.remove('selected');
-    });
-    selectedCells = [];
-}
-
-function updateWordListUI() {
-    const items = document.querySelectorAll('#words-to-find li');
-    items.forEach(item => {
-        const word = item.getAttribute('data-word');
-        if(foundWords.has(word)) {
-            item.classList.add('found-word');
-        } else {
-            item.classList.remove('found-word');
-        }
-    });
-}
-
-function updateCounters() {
-    const found = foundWords.size;
-    const total = wordsToFind.length;
-    document.getElementById('found-count').textContent = found;
-    document.getElementById('total-words').textContent = total;
-    
-    const errorsDiv = document.getElementById('wordsearch-errors');
-    const missing = wordsToFind.filter(w => !foundWords.has(w));
-    if(missing.length > 0) {
-        errorsDiv.innerHTML = `<div class="error-item">⚠️ Palabras por encontrar: ${missing.join(', ')}</div>`;
-    } else {
-        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Felicidades! Encontraste todas las palabras.</div>';
-    }
-}
-
-function resetWordSearch() {
-    foundWords.clear();
-    selectedCells = [];
-    generateWordSearch();
-    updateCounters();
-}
-
-// ==================== ARRASTRAR Y SOLTAR ====================
-let currentDragItem = null;
-
-function initDragDrop() {
-    const draggables = document.querySelectorAll('.drag-item');
-    const dropZones = document.querySelectorAll('.drop-zone .drop-area');
-    
-    draggables.forEach(drag => {
-        drag.setAttribute('draggable', 'true');
-        drag.addEventListener('dragstart', handleDragStart);
-        drag.addEventListener('dragend', handleDragEnd);
-    });
-    
-    dropZones.forEach(zone => {
-        zone.addEventListener('dragover', handleDragOver);
-        zone.addEventListener('drop', handleDrop);
-    });
-    
-    updateDragCounters();
-}
-
-function handleDragStart(e) {
-    currentDragItem = this;
-    this.classList.add('dragging');
-    e.dataTransfer.setData('text/plain', this.textContent);
-    e.dataTransfer.effectAllowed = 'move';
-}
-
-function handleDragEnd(e) {
-    if(currentDragItem) {
-        currentDragItem.classList.remove('dragging');
-        currentDragItem = null;
-    }
-}
-
-function handleDragOver(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-}
-
-function handleDrop(e) {
-    e.preventDefault();
-    if(!currentDragItem) return;
-    
-    const dropZone = this;
-    const parentZone = dropZone.closest('.drop-zone');
-    const expectedType = parentZone.getAttribute('data-expected');
-    const correctType = currentDragItem.getAttribute('data-correct');
-    
-    if(currentDragItem.classList.contains('dropped')) {
-        return;
-    }
-    
-    if(expectedType === correctType) {
-        const clonedItem = currentDragItem.cloneNode(true);
-        clonedItem.classList.add('dropped');
-        clonedItem.setAttribute('draggable', 'false');
-        clonedItem.style.opacity = '0.7';
-        clonedItem.style.cursor = 'default';
-        dropZone.appendChild(clonedItem);
-        currentDragItem.style.display = 'none';
-        currentDragItem.classList.add('dropped');
-    } else {
-        showDragError(currentDragItem.textContent, expectedType);
-    }
-    
-    updateDragCounters();
-}
-
-function showDragError(itemText, expected) {
-    const correctType = currentDragItem.getAttribute('data-correct');
-    const errorsDiv = document.getElementById('drag-errors');
-    const errorMsg = document.createElement('div');
-    errorMsg.className = 'error-item';
-    errorMsg.textContent = `❌ "${itemText}" pertenece a ${correctType}, no a ${expected}`;
-    errorsDiv.appendChild(errorMsg);
-    setTimeout(() => {
-        errorMsg.remove();
-    }, 3000);
-}
-
-function updateDragCounters() {
-    const allItems = document.querySelectorAll('#drag-items .drag-item');
-    const droppedItems = document.querySelectorAll('#drag-items .drag-item[style*="display: none"]');
-    const correctCount = droppedItems.length;
-    const total = allItems.length;
-    
-    document.getElementById('drag-correct-count').textContent = correctCount;
-    document.getElementById('drag-total-count').textContent = total;
-    
-    const errorsDiv = document.getElementById('drag-errors');
-    if(correctCount === total && total > 0) {
-        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Excelente! Todas las sentencias están correctamente clasificadas.</div>';
-    } else {
-        const pending = total - correctCount;
-        if(pending > 0 && pending !== total) {
-            errorsDiv.innerHTML = `<div class="error-item">📌 Faltan colocar ${pending} elemento(s) correctamente.</div>`;
-        }
-    }
-}
-
-function resetDragDrop() {
-    location.reload();
-}
-
-// ==================== UNIR PALABRAS (MATCHING) ====================
-let selectedTerm = null;
-let matchedPairs = new Set();
-
-function initMatching() {
-    // Barajar las definiciones para orden aleatorio
-    const defColumn = document.getElementById('definitions-column');
-    const definitions = Array.from(defColumn.querySelectorAll('.matching-item'));
-    const shuffledDefs = definitions.sort(() => Math.random() - 0.5);
-    defColumn.innerHTML = '<h3>📝 Definiciones</h3>';
-    shuffledDefs.forEach(def => defColumn.appendChild(def));
-    
-    const terms = document.querySelectorAll('#terms-column .matching-item');
-    const defs = document.querySelectorAll('#definitions-column .matching-item');
-    
-    terms.forEach(term => {
-        term.addEventListener('click', () => handleTermClick(term));
-    });
-    
-    defs.forEach(def => {
-        def.addEventListener('click', () => handleDefClick(def));
-    });
-    
-    updateMatchingCounters();
-}
-
-function handleTermClick(term) {
-    if(term.classList.contains('matched')) return;
-    
-    document.querySelectorAll('.matching-item.selected').forEach(item => {
-        item.classList.remove('selected');
-    });
-    
-    term.classList.add('selected');
-    selectedTerm = term;
-}
-
-function handleDefClick(def) {
-    if(def.classList.contains('matched')) return;
-    
-    if(selectedTerm && !selectedTerm.classList.contains('matched')) {
-        const termWord = selectedTerm.getAttribute('data-term');
-        const defText = def.getAttribute('data-def');
-        
-        if(termWord === defText) {
-            selectedTerm.classList.add('matched');
-            def.classList.add('matched');
-            selectedTerm.classList.remove('selected');
-            matchedPairs.add(termWord);
-            updateMatchingCounters();
-        } else {
-            showMatchingError(termWord, defText);
-        }
-        selectedTerm = null;
-    } else if(selectedTerm && selectedTerm.classList.contains('matched')) {
-        selectedTerm = null;
-    } else {
-        document.querySelectorAll('.matching-item.selected').forEach(item => {
-            item.classList.remove('selected');
-        });
-        def.classList.add('selected');
-        selectedTerm = def;
-    }
-}
-
-function showMatchingError(term, definition) {
-    const errorsDiv = document.getElementById('matching-errors');
-    const errorMsg = document.createElement('div');
-    errorMsg.className = 'error-item';
-    errorMsg.textContent = `❌ "${term}" no coincide con "${definition}"`;
-    errorsDiv.appendChild(errorMsg);
-    setTimeout(() => {
-        errorMsg.remove();
-    }, 3000);
-}
-
-function updateMatchingCounters() {
-    const total = 8;
-    const correct = matchedPairs.size;
-    document.getElementById('matching-correct-count').textContent = correct;
-    document.getElementById('matching-total-count').textContent = total;
-    
-    const errorsDiv = document.getElementById('matching-errors');
-    if(correct === total) {
-        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Perfecto! Todos los conceptos están correctamente emparejados.</div>';
-    } else {
-        const pending = total - correct;
-        errorsDiv.innerHTML = `<div class="error-item">📌 Faltan emparejar ${pending} concepto(s).</div>`;
-    }
-}
-
-function resetMatching() {
-    matchedPairs.clear();
-    selectedTerm = null;
-    document.querySelectorAll('.matching-item').forEach(item => {
-        item.classList.remove('matched', 'selected');
-    });
-    updateMatchingCounters();
-    document.getElementById('matching-errors').innerHTML = '';
-}
-
-// ==================== INICIALIZACIÓN ====================
-document.addEventListener('DOMContentLoaded', () => {
-    generateWordSearch();
-    initDragDrop();
-    initMatching();
-    document.getElementById('total-words').textContent = wordsToFind.length;
-    document.getElementById('drag-total-count').textContent = document.querySelectorAll('#drag-items .drag-item').length;
-    document.getElementById('matching-total-count').textContent = '8';
-});

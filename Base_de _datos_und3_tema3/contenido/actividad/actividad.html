@@ -3,255 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seguridad API - Validaciones e Inyección SQL</title>
+    <title>Validaciones e Inyección SQL - Actividades Interactivas</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🛡️ Seguridad API: Validaciones e Inyección SQL</h1>
-            <p>Actividades interactivas para aprender seguridad en APIs</p>
-        </header>
+<div class="container">
+    <header>
+        <div class="header-icon">🛡️</div>
+        <h1>Validaciones e Inyección SQL</h1>
+        <p>Actividades interactivas para aprender a proteger bases de datos contra ataques y errores de validación</p>
+    </header>
 
-        <!-- ==================== ACTIVIDAD 1: SOPA DE LETRAS ==================== -->
-        <section class="activity-card" id="activity1">
-            <h2>🔍 Actividad 1: Sopa de Letras - Términos de Seguridad</h2>
-            <p>Encuentra las siguientes palabras relacionadas con seguridad en APIs y bases de datos: <strong>SQLINJECTION, VALIDATION, SANITIZE, ESCAPE, PREPARED, STATEMENT, OWASP, AUTHENTICATION, AUTHORIZATION, ENCRYPTION, HASHING, SALT, TOKEN, JWT, XSS, CSRF</strong></p>
-            <p class="instruction">💡 Haz clic en las letras en orden para formar cada palabra. Las palabras pueden estar en horizontal o vertical.</p>
+    <!-- ACTIVIDAD 1: SOPA DE LETRAS -->
+    <section class="activity-card" id="activity1">
+        <div class="card-label">Actividad 1</div>
+        <h2>🔍 Sopa de Letras — Términos de Seguridad SQL</h2>
+        <p>Encuentra las 16 palabras clave relacionadas con inyección SQL, consultas preparadas y validación de datos.</p>
+        <p class="instruction">💡 Haz clic en la primera letra y arrastra hasta la última. Las palabras pueden estar en horizontal, vertical o diagonal en cualquier dirección.</p>
 
-            <div id="wordsearch-container">
-                <!-- La sopa de letras se genera con JS -->
-            </div>
-
+        <div id="wordsearch-wrapper">
+            <div id="wordsearch-container"></div>
             <div class="word-list">
-                <h3>📝 Palabras a encontrar:</h3>
-                <ul id="words-to-find">
-                    <li data-word="SQLINJECTION">SQLINJECTION</li>
-                    <li data-word="VALIDATION">VALIDATION</li>
-                    <li data-word="SANITIZE">SANITIZE</li>
-                    <li data-word="ESCAPE">ESCAPE</li>
-                    <li data-word="PREPARED">PREPARED</li>
-                    <li data-word="STATEMENT">STATEMENT</li>
-                    <li data-word="OWASP">OWASP</li>
-                    <li data-word="AUTHENTICATION">AUTHENTICATION</li>
-                    <li data-word="AUTHORIZATION">AUTHORIZATION</li>
-                    <li data-word="ENCRYPTION">ENCRYPTION</li>
-                    <li data-word="HASHING">HASHING</li>
-                    <li data-word="SALT">SALT</li>
-                    <li data-word="TOKEN">TOKEN</li>
-                    <li data-word="JWT">JWT</li>
-                    <li data-word="XSS">XSS</li>
-                    <li data-word="CSRF">CSRF</li>
-                </ul>
+                <h3>📝 Palabras a encontrar</h3>
+                <ul id="words-to-find"></ul>
             </div>
+        </div>
 
-            <div class="activity-feedback">
-                <div class="feedback-header">
-                    <span>✅ Palabras encontradas:</span>
-                    <strong><span id="found-count">0</span> / <span id="total-words">16</span></strong>
-                </div>
-                <div id="wordsearch-errors" class="errors-list"></div>
+        <div class="activity-feedback">
+            <div class="feedback-header">
+                <span>✅ Palabras encontradas: <strong><span id="found-count">0</span> / <span id="total-words">16</span></strong></span>
             </div>
-            <button class="reset-btn" onclick="resetWordSearch()">🔄 Reiniciar Sopa</button>
-        </section>
+            <div id="wordsearch-feedback" class="feedback-msg"></div>
+        </div>
+        <button class="reset-btn" onclick="resetWordSearch()">🔄 Reiniciar Sopa</button>
+    </section>
 
-        <!-- ==================== ACTIVIDAD 2: ARRASTRAR Y SOLTAR ==================== -->
-        <section class="activity-card" id="activity2">
-            <h2>🖱️ Actividad 2: Arrastrar y Soltar - Tipos de Ataques y Defensas</h2>
-            <p>Lee cada descripción de vulnerabilidad o ataque y arrastra la descripción correcta a su categoría correspondiente.</p>
+    <!-- ACTIVIDAD 2: ARRASTRAR Y SOLTAR -->
+    <section class="activity-card" id="activity2">
+        <div class="card-label">Actividad 2</div>
+        <h2>🖱️ Arrastrar y Soltar — Clasifica las Prácticas de Seguridad</h2>
+        <p>Arrastra cada enunciado a la categoría de seguridad SQL que le corresponde.</p>
+        <p class="instruction">💡 Cada zona acepta una tarjeta. Los incorrectos aparecerán en rojo con una explicación para que aprendas del error.</p>
 
-            <div class="drag-drop-container">
-                <div class="items-to-drag" id="drag-items">
-                    <div class="drag-item" draggable="true" data-correct="sql-injection">Inyección de código SQL malicioso en consultas</div>
-                    <div class="drag-item" draggable="true" data-correct="xss">Inserción de scripts maliciosos en páginas web</div>
-                    <div class="drag-item" draggable="true" data-correct="csrf">Ataque que fuerza a un usuario a ejecutar acciones no deseadas</div>
-                    <div class="drag-item" draggable="true" data-correct="validation">Verificar que los datos de entrada cumplan con reglas específicas</div>
-                    <div class="drag-item" draggable="true" data-correct="prepared-statements">Consultas SQL precompiladas que separan código de datos</div>
-                    <div class="drag-item" draggable="true" data-correct="hashing">Convertir contraseñas en valores irreversibles usando algoritmos como bcrypt</div>
-                    <div class="drag-item" draggable="true" data-correct="jwt">Tokens seguros para autenticación que contienen información del usuario</div>
-                    <div class="drag-item" draggable="true" data-correct="sanitization">Limpiar datos de entrada eliminando caracteres peligrosos</div>
-                </div>
+        <div class="drag-drop-container">
+            <div class="items-to-drag" id="drag-items-2"></div>
+            <div class="drop-zones" id="drop-zones-2"></div>
+        </div>
 
-                <div class="drop-zones">
-                    <div class="drop-zone" data-expected="sql-injection">
-                        <h3>💉 SQL Injection</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="xss">
-                        <h3>📜 XSS</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="csrf">
-                        <h3>🔄 CSRF</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="validation">
-                        <h3>✅ Validación</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="prepared-statements">
-                        <h3>🛡️ Prepared Statements</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="hashing">
-                        <h3>🔐 Hashing</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="jwt">
-                        <h3>🎫 JWT</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                    <div class="drop-zone" data-expected="sanitization">
-                        <h3>🧹 Sanitización</h3>
-                        <div class="drop-area"></div>
-                    </div>
-                </div>
+        <div class="activity-feedback">
+            <div class="feedback-header">
+                <span>✅ Correctos: <strong><span id="drag-correct-count">0</span> / <span id="drag-total-count">8</span></strong></span>
             </div>
+            <div id="drag-feedback" class="feedback-msg"></div>
+        </div>
+        <button class="reset-btn" onclick="resetDragDrop()">🔄 Reiniciar Actividad</button>
+    </section>
 
-            <div class="activity-feedback">
-                <div class="feedback-header">
-                    <span>✅ Descripciones colocadas correctamente:</span>
-                    <strong><span id="drag-correct-count">0</span> / <span id="drag-total-count">8</span></strong>
-                </div>
-                <div id="drag-errors" class="errors-list"></div>
+    <!-- ACTIVIDAD 3: UNIR PALABRAS -->
+    <section class="activity-card" id="activity3">
+        <div class="card-label">Actividad 3</div>
+        <h2>🔗 Unir Conceptos — Términos de Seguridad y sus Definiciones</h2>
+        <p>Haz clic en un término de la izquierda y luego en su definición de la derecha para emparejarlos correctamente.</p>
+        <p class="instruction">💡 Los pares correctos se marcarán en color con una explicación. Los incorrectos parpadearán indicando el error.</p>
+
+        <div class="matching-container">
+            <div class="matching-column">
+                <h3>⚠️ Términos de Seguridad</h3>
+                <div id="terms-column"></div>
             </div>
-            <button class="reset-btn" onclick="resetDragDrop()">🔄 Reiniciar Actividad</button>
-        </section>
-
-        <!-- ==================== ACTIVIDAD 3: UNIR PALABRAS ==================== -->
-        <section class="activity-card" id="activity3">
-            <h2>🔗 Actividad 3: Unir Palabras - Vulnerabilidades y Soluciones</h2>
-            <p>Haz clic en una vulnerabilidad de la izquierda y luego en su solución de la derecha para emparejarlos.</p>
-            <p class="instruction">💡 Los pares correctos se marcarán en verde.</p>
-
-            <div class="matching-container">
-                <div class="matching-column" id="terms-column">
-                    <h3>🚨 Vulnerabilidades</h3>
-                    <div class="matching-item" data-term="SQL Injection">SQL Injection</div>
-                    <div class="matching-item" data-term="XSS">XSS</div>
-                    <div class="matching-item" data-term="CSRF">CSRF</div>
-                    <div class="matching-item" data-term="Weak Passwords">Weak Passwords</div>
-                    <div class="matching-item" data-term="No Input Validation">No Input Validation</div>
-                    <div class="matching-item" data-term="Plain Text Passwords">Plain Text Passwords</div>
-                    <div class="matching-item" data-term="Session Hijacking">Session Hijacking</div>
-                    <div class="matching-item" data-term="Man-in-the-Middle">Man-in-the-Middle</div>
-                </div>
-
-                <div class="matching-column" id="definitions-column">
-                    <h3>🛡️ Soluciones</h3>
-                    <div class="matching-item" data-def="SQL Injection">Usar prepared statements y parámetros preparados</div>
-                    <div class="matching-item" data-def="XSS">Escapar caracteres especiales y validar entrada</div>
-                    <div class="matching-item" data-def="CSRF">Implementar tokens CSRF y validar origen de requests</div>
-                    <div class="matching-item" data-def="Weak Passwords">Enforzar políticas de contraseñas seguras</div>
-                    <div class="matching-item" data-def="No Input Validation">Validar y sanitizar todos los datos de entrada</div>
-                    <div class="matching-item" data-def="Plain Text Passwords">Usar hashing con salt (bcrypt, Argon2)</div>
-                    <div class="matching-item" data-def="Session Hijacking">Usar HTTPS y regenerar session IDs</div>
-                    <div class="matching-item" data-def="Man-in-the-Middle">Implementar HTTPS y certificados SSL/TLS</div>
-                </div>
+            <div class="matching-column">
+                <h3>📝 Definiciones</h3>
+                <div id="definitions-column"></div>
             </div>
+        </div>
 
-            <div class="activity-feedback">
-                <div class="feedback-header">
-                    <span>✅ Parejas correctas:</span>
-                    <strong><span id="matching-correct-count">0</span> / <span id="matching-total-count">8</span></strong>
-                </div>
-                <div id="matching-errors" class="errors-list"></div>
+        <div class="activity-feedback">
+            <div class="feedback-header">
+                <span>✅ Parejas correctas: <strong><span id="matching-correct-count">0</span> / <span id="matching-total-count">8</span></strong></span>
             </div>
-            <button class="reset-btn" onclick="resetMatching()">🔄 Reiniciar Actividad</button>
-        </section>
-    </div>
+            <div id="matching-feedback" class="feedback-msg"></div>
+        </div>
+        <button class="reset-btn" onclick="resetMatching()">🔄 Reiniciar Actividad</button>
+    </section>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
-<script src="script.js"></script>
-
-        <!-- ==================== ACTIVIDAD 2: ARRASTRAR Y SOLTAR ==================== -->
-        <section class="activity-card" id="activity2">
-            <h2>🖱️ Actividad 2: Arrastrar y Soltar - Clasifica Sentencias DDL</h2>
-            <p>Arrastra cada sentencia SQL a la operación DDL que le corresponde (CREATE, ALTER o DROP).</p>
-            
-            <div class="drag-drop-container">
-                <div class="items-to-drag" id="drag-items">
-                    <div class="drag-item" draggable="true" data-correct="CREATE">CREATE TABLE usuarios (...)</div>
-                    <div class="drag-item" draggable="true" data-correct="ALTER">ALTER TABLE clientes ADD telefono VARCHAR(15)</div>
-                    <div class="drag-item" draggable="true" data-correct="DROP">DROP DATABASE sistema_ventas</div>
-                    <div class="drag-item" draggable="true" data-correct="CREATE">CREATE INDEX idx_nombre ON empleados(nombre)</div>
-                    <div class="drag-item" draggable="true" data-correct="ALTER">ALTER TABLE productos MODIFY COLUMN precio DECIMAL(10,2)</div>
-                    <div class="drag-item" draggable="true" data-correct="DROP">DROP TABLE temp_logs</div>
-                    <div class="drag-item" draggable="true" data-correct="CREATE">CREATE VIEW vista_activos AS SELECT * FROM usuarios WHERE activo=1</div>
-                    <div class="drag-item" draggable="true" data-correct="ALTER">ALTER TABLE pedidos DROP COLUMN observaciones</div>
-                </div>
-                
-                <div class="drop-zones">
-                    <div class="drop-zone" data-expected="CREATE">
-                        <h3>📌 CREATE</h3>
-                        <div class="drop-area"></div>
-                        <p class="zone-desc">Crear nuevos objetos (tablas, índices, vistas)</p>
-                    </div>
-                    <div class="drop-zone" data-expected="ALTER">
-                        <h3>✏️ ALTER</h3>
-                        <div class="drop-area"></div>
-                        <p class="zone-desc">Modificar estructura existente</p>
-                    </div>
-                    <div class="drop-zone" data-expected="DROP">
-                        <h3>🗑️ DROP</h3>
-                        <div class="drop-area"></div>
-                        <p class="zone-desc">Eliminar objetos permanentemente</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="activity-feedback">
-                <div class="feedback-header">
-                    <span>✅ Elementos colocados correctamente:</span>
-                    <strong><span id="drag-correct-count">0</span> / <span id="drag-total-count">8</span></strong>
-                </div>
-                <div id="drag-errors" class="errors-list"></div>
-            </div>
-            <button class="reset-btn" onclick="resetDragDrop()">🔄 Reiniciar Actividad</button>
-        </section>
-
-        <!-- ==================== ACTIVIDAD 3: UNIR PALABRA - RELACIONAR CONCEPTOS ==================== -->
-        <section class="activity-card" id="activity3">
-            <h2>🔗 Actividad 3: Unir Palabra - Relaciona Conceptos DDL</h2>
-            <p>Haz clic en un término de la izquierda y luego en su definición de la derecha para emparejarlos.</p>
-            <p class="instruction">💡 Los pares correctos se marcarán en verde.</p>
-            
-            <div class="matching-container">
-                <div class="matching-column" id="terms-column">
-                    <h3>📖 Términos DDL</h3>
-                    <div class="matching-item" data-term="CREATE">CREATE</div>
-                    <div class="matching-item" data-term="ALTER">ALTER</div>
-                    <div class="matching-item" data-term="DROP">DROP</div>
-                    <div class="matching-item" data-term="PRIMARY KEY">PRIMARY KEY</div>
-                    <div class="matching-item" data-term="NOT NULL">NOT NULL</div>
-                    <div class="matching-item" data-term="FOREIGN KEY">FOREIGN KEY</div>
-                    <div class="matching-item" data-term="AUTO_INCREMENT">AUTO_INCREMENT</div>
-                    <div class="matching-item" data-term="VARCHAR">VARCHAR</div>
-                </div>
-                
-                <div class="matching-column" id="definitions-column">
-                    <h3>📝 Definiciones</h3>
-                    <div class="matching-item" data-def="CREATE">Crear nuevas tablas, índices o vistas</div>
-                    <div class="matching-item" data-def="ALTER">Modificar la estructura de objetos existentes</div>
-                    <div class="matching-item" data-def="DROP">Eliminar objetos de la base de datos permanentemente</div>
-                    <div class="matching-item" data-def="PRIMARY KEY">Identifica de forma única cada fila; no nulo y único</div>
-                    <div class="matching-item" data-def="NOT NULL">Restricción que impide valores vacíos</div>
-                    <div class="matching-item" data-def="FOREIGN KEY">Establece relación entre tablas</div>
-                    <div class="matching-item" data-def="AUTO_INCREMENT">Genera valores automáticos secuenciales</div>
-                    <div class="matching-item" data-def="VARCHAR">Tipo de dato para texto de longitud variable</div>
-                </div>
-            </div>
-            
-            <div class="activity-feedback">
-                <div class="feedback-header">
-                    <span>✅ Parejas correctas:</span>
-                    <strong><span id="matching-correct-count">0</span> / <span id="matching-total-count">8</span></strong>
-                </div>
-                <div id="matching-errors" class="errors-list"></div>
-            </div>
-            <button class="reset-btn" onclick="resetMatching()">🔄 Reiniciar Actividad</button>
-        </section>
-    </div>
-</body>
-</html>
-<script src="script.js"></script>
