@@ -1,4 +1,3 @@
-javascript
 const quizData = [
     { q: "¿Qué ocurre en un ataque de Inyección SQL?", a: ["Se borra el disco duro del servidor", "Se envía código malicioso que la aplicación ejecuta como instrucción legítima", "Se satura la red con peticiones falsas", "Se cambia el CSS de la página"], c: 1 },
     { q: "¿Cuál es la causa técnica principal de la Inyección SQL?", a: ["Usar contraseñas cortas", "Cerrar mal la conexión", "Concatenar variables directamente en la consulta SQL", "No usar HTTPS"], c: 2 },
