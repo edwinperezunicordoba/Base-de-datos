@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DDL - Actividades Interactivas y Evaluación</title>
+    <title>Conexión a Bases de Datos - Actividades Interactivas</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📚 DDL - Data Definition Language</h1>
-            <p>Actividades interactivas para aprender CREATE, ALTER y DROP</p>
+            <h1>🔌 Conexión de Aplicaciones con Bases de Datos</h1>
+            <p>Actividades interactivas para aprender a conectar aplicaciones a bases de datos</p>
         </header>
 
         <!-- ==================== ACTIVIDAD 1: SOPA DE LETRAS ==================== -->
         <section class="activity-card" id="activity1">
-            <h2>🔍 Actividad 1: Sopa de Letras - Términos DDL</h2>
-            <p>Encuentra las siguientes palabras relacionadas con DDL: <strong>CREATE, ALTER, DROP, TABLE, DATABASE, COLUMN, PRIMARY, FOREIGN, INDEX, VIEW</strong></p>
-            <p class="instruction">💡 Haz clic en las letras en orden para formar cada palabra. Las palabras pueden estar en horizontal.</p>
+            <h2>🔍 Actividad 1: Sopa de Letras - Términos de Conexión</h2>
+            <p>Encuentra las siguientes palabras relacionadas con conexión a bases de datos: <strong>DRIVER, HOST, PORT, POOL, PASSWORD, DATABASE, CONEXION, MYSQL, POSTGRES, CLIENTE, SERVIDOR, PROTOCOLO, CREDENCIALES</strong></p>
+            <p class="instruction">💡 Haz clic en las letras en orden para formar cada palabra. Las palabras pueden estar en horizontal o vertical.</p>
             
             <div id="wordsearch-container">
                 <!-- La sopa de letras se genera con JS -->
@@ -26,23 +26,26 @@
             <div class="word-list">
                 <h3>📝 Palabras a encontrar:</h3>
                 <ul id="words-to-find">
-                    <li data-word="CREATE">CREATE</li>
-                    <li data-word="ALTER">ALTER</li>
-                    <li data-word="DROP">DROP</li>
-                    <li data-word="TABLE">TABLE</li>
+                    <li data-word="DRIVER">DRIVER</li>
+                    <li data-word="HOST">HOST</li>
+                    <li data-word="PORT">PORT</li>
+                    <li data-word="POOL">POOL</li>
+                    <li data-word="PASSWORD">PASSWORD</li>
                     <li data-word="DATABASE">DATABASE</li>
-                    <li data-word="COLUMN">COLUMN</li>
-                    <li data-word="PRIMARY">PRIMARY</li>
-                    <li data-word="FOREIGN">FOREIGN</li>
-                    <li data-word="INDEX">INDEX</li>
-                    <li data-word="VIEW">VIEW</li>
+                    <li data-word="CONEXION">CONEXION</li>
+                    <li data-word="MYSQL">MYSQL</li>
+                    <li data-word="POSTGRES">POSTGRES</li>
+                    <li data-word="CLIENTE">CLIENTE</li>
+                    <li data-word="SERVIDOR">SERVIDOR</li>
+                    <li data-word="PROTOCOLO">PROTOCOLO</li>
+                    <li data-word="CREDENCIALES">CREDENCIALES</li>
                 </ul>
             </div>
             
             <div class="activity-feedback">
                 <div class="feedback-header">
                     <span>✅ Palabras encontradas:</span>
-                    <strong><span id="found-count">0</span> / <span id="total-words">10</span></strong>
+                    <strong><span id="found-count">0</span> / <span id="total-words">13</span></strong>
                 </div>
                 <div id="wordsearch-errors" class="errors-list"></div>
             </div>
@@ -51,43 +54,68 @@
 
         <!-- ==================== ACTIVIDAD 2: ARRASTRAR Y SOLTAR ==================== -->
         <section class="activity-card" id="activity2">
-            <h2>🖱️ Actividad 2: Arrastrar y Soltar - Clasifica Sentencias DDL</h2>
-            <p>Arrastra cada sentencia SQL a la operación DDL que le corresponde (CREATE, ALTER o DROP).</p>
+            <h2>🖱️ Actividad 2: Arrastrar y Soltar - Parámetros de Conexión</h2>
+            <p>Arrastra cada parámetro a su descripción correcta para aprender cómo configurar una conexión a base de datos.</p>
             
             <div class="drag-drop-container">
                 <div class="items-to-drag" id="drag-items">
-                    <div class="drag-item" draggable="true" data-correct="CREATE">CREATE TABLE usuarios (...)</div>
-                    <div class="drag-item" draggable="true" data-correct="ALTER">ALTER TABLE clientes ADD telefono VARCHAR(15)</div>
-                    <div class="drag-item" draggable="true" data-correct="DROP">DROP DATABASE sistema_ventas</div>
-                    <div class="drag-item" draggable="true" data-correct="CREATE">CREATE INDEX idx_nombre ON empleados(nombre)</div>
-                    <div class="drag-item" draggable="true" data-correct="ALTER">ALTER TABLE productos MODIFY COLUMN precio DECIMAL(10,2)</div>
-                    <div class="drag-item" draggable="true" data-correct="DROP">DROP TABLE temp_logs</div>
-                    <div class="drag-item" draggable="true" data-correct="CREATE">CREATE VIEW vista_activos AS SELECT * FROM usuarios WHERE activo=1</div>
-                    <div class="drag-item" draggable="true" data-correct="ALTER">ALTER TABLE pedidos DROP COLUMN observaciones</div>
+                    <div class="drag-item" draggable="true" data-correct="host">host</div>
+                    <div class="drag-item" draggable="true" data-correct="port">port</div>
+                    <div class="drag-item" draggable="true" data-correct="user">user</div>
+                    <div class="drag-item" draggable="true" data-correct="password">password</div>
+                    <div class="drag-item" draggable="true" data-correct="database">database</div>
+                    <div class="drag-item" draggable="true" data-correct="driver">driver</div>
+                    <div class="drag-item" draggable="true" data-correct="pool">pool</div>
+                    <div class="drag-item" draggable="true" data-correct="charset">charset</div>
                 </div>
                 
                 <div class="drop-zones">
-                    <div class="drop-zone" data-expected="CREATE">
-                        <h3>📌 CREATE</h3>
+                    <div class="drop-zone" data-expected="host">
+                        <h3>🏠 host</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Crear nuevos objetos (tablas, índices, vistas)</p>
+                        <p class="zone-desc">Servidor donde corre la base de datos (localhost, 192.168.1.10)</p>
                     </div>
-                    <div class="drop-zone" data-expected="ALTER">
-                        <h3>✏️ ALTER</h3>
+                    <div class="drop-zone" data-expected="port">
+                        <h3>🔢 port</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Modificar estructura existente</p>
+                        <p class="zone-desc">Puerto de comunicación (3306 para MySQL, 5432 para PostgreSQL)</p>
                     </div>
-                    <div class="drop-zone" data-expected="DROP">
-                        <h3>🗑️ DROP</h3>
+                    <div class="drop-zone" data-expected="user">
+                        <h3>👤 user</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Eliminar objetos permanentemente</p>
+                        <p class="zone-desc">Usuario con acceso a la base de datos (root, admin, app_user)</p>
+                    </div>
+                    <div class="drop-zone" data-expected="password">
+                        <h3>🔐 password</h3>
+                        <div class="drop-area"></div>
+                        <p class="zone-desc">Contraseña del usuario para autenticarse</p>
+                    </div>
+                    <div class="drop-zone" data-expected="database">
+                        <h3>📦 database</h3>
+                        <div class="drop-area"></div>
+                        <p class="zone-desc">Nombre de la base de datos a usar (tienda_db, usuarios_db)</p>
+                    </div>
+                    <div class="drop-zone" data-expected="driver">
+                        <h3>📚 driver</h3>
+                        <div class="drop-area"></div>
+                        <p class="zone-desc">Librería que traduce órdenes al lenguaje de la BD (mysql2, pg, psycopg2)</p>
+                    </div>
+                    <div class="drop-zone" data-expected="pool">
+                        <h3>♻️ pool</h3>
+                        <div class="drop-area"></div>
+                        <p class="zone-desc">Conjunto de conexiones reutilizables para mejor rendimiento</p>
+                    </div>
+                    <div class="drop-zone" data-expected="charset">
+                        <h3>🔤 charset</h3>
+                        <div class="drop-area"></div>
+                        <p class="zone-desc">Codificación de caracteres (utf8mb4, utf8)</p>
                     </div>
                 </div>
             </div>
             
             <div class="activity-feedback">
                 <div class="feedback-header">
-                    <span>✅ Elementos colocados correctamente:</span>
+                    <span>✅ Parámetros colocados correctamente:</span>
                     <strong><span id="drag-correct-count">0</span> / <span id="drag-total-count">8</span></strong>
                 </div>
                 <div id="drag-errors" class="errors-list"></div>
@@ -95,35 +123,35 @@
             <button class="reset-btn" onclick="resetDragDrop()">🔄 Reiniciar Actividad</button>
         </section>
 
-        <!-- ==================== ACTIVIDAD 3: UNIR PALABRA - RELACIONAR CONCEPTOS ==================== -->
+        <!-- ==================== ACTIVIDAD 3: UNIR PALABRAS ==================== -->
         <section class="activity-card" id="activity3">
-            <h2>🔗 Actividad 3: Unir Palabra - Relaciona Conceptos DDL</h2>
-            <p>Haz clic en un término de la izquierda y luego en su definición de la derecha para emparejarlos.</p>
+            <h2>🔗 Actividad 3: Unir Palabras - Bases de Datos y sus Características</h2>
+            <p>Haz clic en una base de datos de la izquierda y luego en su característica de la derecha para emparejarlos.</p>
             <p class="instruction">💡 Los pares correctos se marcarán en verde.</p>
             
             <div class="matching-container">
                 <div class="matching-column" id="terms-column">
-                    <h3>📖 Términos DDL</h3>
-                    <div class="matching-item" data-term="CREATE">CREATE</div>
-                    <div class="matching-item" data-term="ALTER">ALTER</div>
-                    <div class="matching-item" data-term="DROP">DROP</div>
-                    <div class="matching-item" data-term="PRIMARY KEY">PRIMARY KEY</div>
-                    <div class="matching-item" data-term="NOT NULL">NOT NULL</div>
-                    <div class="matching-item" data-term="FOREIGN KEY">FOREIGN KEY</div>
-                    <div class="matching-item" data-term="AUTO_INCREMENT">AUTO_INCREMENT</div>
-                    <div class="matching-item" data-term="VARCHAR">VARCHAR</div>
+                    <h3>🗄️ Bases de Datos</h3>
+                    <div class="matching-item" data-term="MySQL">MySQL</div>
+                    <div class="matching-item" data-term="PostgreSQL">PostgreSQL</div>
+                    <div class="matching-item" data-term="MongoDB">MongoDB</div>
+                    <div class="matching-item" data-term="Connection String">Connection String</div>
+                    <div class="matching-item" data-term="Pool">Pool</div>
+                    <div class="matching-item" data-term="Driver">Driver</div>
+                    <div class="matching-item" data-term="Query">Query</div>
+                    <div class="matching-item" data-term="Async/Await">Async/Await</div>
                 </div>
                 
                 <div class="matching-column" id="definitions-column">
-                    <h3>📝 Definiciones</h3>
-                    <div class="matching-item" data-def="CREATE">Crear nuevas tablas, índices o vistas</div>
-                    <div class="matching-item" data-def="ALTER">Modificar la estructura de objetos existentes</div>
-                    <div class="matching-item" data-def="DROP">Eliminar objetos de la base de datos permanentemente</div>
-                    <div class="matching-item" data-def="PRIMARY KEY">Identifica de forma única cada fila; no nulo y único</div>
-                    <div class="matching-item" data-def="NOT NULL">Restricción que impide valores vacíos</div>
-                    <div class="matching-item" data-def="FOREIGN KEY">Establece relación entre tablas</div>
-                    <div class="matching-item" data-def="AUTO_INCREMENT">Genera valores automáticos secuenciales</div>
-                    <div class="matching-item" data-def="VARCHAR">Tipo de dato para texto de longitud variable</div>
+                    <h3>📝 Características</h3>
+                    <div class="matching-item" data-def="MySQL">Usa puerto 3306 por defecto y librería mysql2</div>
+                    <div class="matching-item" data-def="PostgreSQL">Usa puerto 5432 y parámetros con $1, $2</div>
+                    <div class="matching-item" data-def="MongoDB">Base de datos NoSQL con documentos JSON</div>
+                    <div class="matching-item" data-def="Connection String">Línea de texto con protocolo://usuario:contraseña@host:puerto/BD</div>
+                    <div class="matching-item" data-def="Pool">Conjunto de conexiones ya abiertas y reutilizables</div>
+                    <div class="matching-item" data-def="Driver">Biblioteca que traduce órdenes al lenguaje de la BD</div>
+                    <div class="matching-item" data-def="Query">Orden SQL enviada al servidor de base de datos</div>
+                    <div class="matching-item" data-def="Async/Await">Forma de ejecutar código asincrónico de manera legible</div>
                 </div>
             </div>
             

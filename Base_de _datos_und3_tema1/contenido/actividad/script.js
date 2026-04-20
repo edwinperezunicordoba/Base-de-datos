@@ -3,11 +3,11 @@ let wordSearchGrid = [];
 let selectedCells = [];
 let foundWords = new Set();
 
-const wordsToFind = ['CREATE', 'ALTER', 'DROP', 'TABLE', 'DATABASE', 'COLUMN', 'PRIMARY', 'FOREIGN', 'INDEX', 'VIEW'];
+const wordsToFind = ['DRIVER', 'HOST', 'PORT', 'POOL', 'PASSWORD', 'DATABASE', 'CONEXION', 'MYSQL', 'POSTGRES', 'CLIENTE', 'SERVIDOR', 'PROTOCOLO', 'CREDENCIALES'];
 
 // Generar sopa de letras
 function generateWordSearch() {
-    const size = 12;
+    const size = 16;
     const grid = Array(size).fill().map(() => Array(size).fill(''));
     
     // Colocar palabras automáticamente desde wordsToFind con direcciones aleatorias
@@ -196,7 +196,6 @@ function checkSelectedWord() {
         markWordAsFound(sorted);
         updateCounters();
     }
-    // Remover el else que limpiaba la selección
 }
 
 function markWordAsFound(cells) {
@@ -240,7 +239,7 @@ function updateCounters() {
     if(missing.length > 0) {
         errorsDiv.innerHTML = `<div class="error-item">⚠️ Palabras por encontrar: ${missing.join(', ')}</div>`;
     } else {
-        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Felicidades! Encontraste todas las palabras.</div>';
+        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Felicidades! Encontraste todas las palabras sobre conexión a bases de datos.</div>';
     }
 }
 
@@ -325,7 +324,7 @@ function showDragError(itemText, expected) {
     const errorsDiv = document.getElementById('drag-errors');
     const errorMsg = document.createElement('div');
     errorMsg.className = 'error-item';
-    errorMsg.textContent = `❌ "${itemText}" pertenece a ${correctType}, no a ${expected}`;
+    errorMsg.textContent = `❌ "${itemText}" debe ir en "${expected}", no en "${expected}"`;
     errorsDiv.appendChild(errorMsg);
     setTimeout(() => {
         errorMsg.remove();
@@ -343,11 +342,11 @@ function updateDragCounters() {
     
     const errorsDiv = document.getElementById('drag-errors');
     if(correctCount === total && total > 0) {
-        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Excelente! Todas las sentencias están correctamente clasificadas.</div>';
+        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Excelente! Todos los parámetros están correctamente clasificados.</div>';
     } else {
         const pending = total - correctCount;
         if(pending > 0 && pending !== total) {
-            errorsDiv.innerHTML = `<div class="error-item">📌 Faltan colocar ${pending} elemento(s) correctamente.</div>`;
+            errorsDiv.innerHTML = `<div class="error-item">📌 Faltan colocar ${pending} parámetro(s) correctamente.</div>`;
         }
     }
 }
@@ -365,7 +364,7 @@ function initMatching() {
     const defColumn = document.getElementById('definitions-column');
     const definitions = Array.from(defColumn.querySelectorAll('.matching-item'));
     const shuffledDefs = definitions.sort(() => Math.random() - 0.5);
-    defColumn.innerHTML = '<h3>📝 Definiciones</h3>';
+    defColumn.innerHTML = '<h3>📝 Características</h3>';
     shuffledDefs.forEach(def => defColumn.appendChild(def));
     
     const terms = document.querySelectorAll('#terms-column .matching-item');
@@ -425,7 +424,7 @@ function showMatchingError(term, definition) {
     const errorsDiv = document.getElementById('matching-errors');
     const errorMsg = document.createElement('div');
     errorMsg.className = 'error-item';
-    errorMsg.textContent = `❌ "${term}" no coincide con "${definition}"`;
+    errorMsg.textContent = `❌ "${term}" no coincide con esa característica. Intenta de nuevo.`;
     errorsDiv.appendChild(errorMsg);
     setTimeout(() => {
         errorMsg.remove();
@@ -440,7 +439,7 @@ function updateMatchingCounters() {
     
     const errorsDiv = document.getElementById('matching-errors');
     if(correct === total) {
-        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Perfecto! Todos los conceptos están correctamente emparejados.</div>';
+        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Perfecto! Todos los conceptos están correctamente emparejados. Ahora comprendes bien cómo conectarse a bases de datos.</div>';
     } else {
         const pending = total - correct;
         errorsDiv.innerHTML = `<div class="error-item">📌 Faltan emparejar ${pending} concepto(s).</div>`;
