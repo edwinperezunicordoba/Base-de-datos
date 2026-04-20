@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       // Usar rutas relativas para mejor compatibilidad con GitHub Pages
       const url = `./contenido/${page}/index.html`;
-      console.log(url);
       const response = await fetch(url);
       
       if (!response.ok) throw new Error("Error al cargar " + page);
