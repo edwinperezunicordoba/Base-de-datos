@@ -215,17 +215,21 @@ p {
 .drag-item {
     background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde) 100%);
     color: white;
-    padding: 14px 16px;
-    margin: 10px 0;
-    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 12px 0;
+    border-radius: 12px;
     cursor: grab;
-    text-align: center;
+    text-align: left;
     transition: all 0.3s;
     user-select: none;
-    font-family: monospace;
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
     box-shadow: 0 3px 10px rgba(86, 145, 81, 0.2);
+    line-height: 1.4;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
 }
 
 .drag-item:hover {
@@ -292,8 +296,11 @@ p {
 .drop-area .drag-item {
     margin: 5px;
     font-size: 0.75rem;
-    padding: 6px;
+    padding: 8px 12px;
     background: linear-gradient(135deg, var(--verde-oscuro) 0%, var(--verde) 100%);
+    line-height: 1.3;
+    min-height: 40px;
+    text-align: left;
 }
 
 .zone-desc {
@@ -463,11 +470,6 @@ p {
     h2 {
         font-size: 1.4rem;
     }
-}
-    color: #22c55e;
-    margin-bottom: 20px;
-    border-bottom: 3px solid #22c55e;
-    padding-bottom: 10px;
 }
 
 .instruction {

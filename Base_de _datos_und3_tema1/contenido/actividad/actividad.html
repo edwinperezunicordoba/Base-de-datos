@@ -54,68 +54,60 @@
 
         <!-- ==================== ACTIVIDAD 2: ARRASTRAR Y SOLTAR ==================== -->
         <section class="activity-card" id="activity2">
-            <h2>🖱️ Actividad 2: Arrastrar y Soltar - Parámetros de Conexión</h2>
-            <p>Arrastra cada parámetro a su descripción correcta para aprender cómo configurar una conexión a base de datos.</p>
+            <h2>🖱️ Actividad 2: Arrastrar y Soltar - Identifica Parámetros de Conexión</h2>
+            <p>Lee cada descripción y arrastra la descripción correcta al parámetro de conexión que le corresponde.</p>
             
             <div class="drag-drop-container">
                 <div class="items-to-drag" id="drag-items">
-                    <div class="drag-item" draggable="true" data-correct="host">host</div>
-                    <div class="drag-item" draggable="true" data-correct="port">port</div>
-                    <div class="drag-item" draggable="true" data-correct="user">user</div>
-                    <div class="drag-item" draggable="true" data-correct="password">password</div>
-                    <div class="drag-item" draggable="true" data-correct="database">database</div>
-                    <div class="drag-item" draggable="true" data-correct="driver">driver</div>
-                    <div class="drag-item" draggable="true" data-correct="pool">pool</div>
-                    <div class="drag-item" draggable="true" data-correct="charset">charset</div>
+                    <div class="drag-item" draggable="true" data-correct="host">Servidor donde corre la base de datos (localhost, 192.168.1.10)</div>
+                    <div class="drag-item" draggable="true" data-correct="port">Puerto de comunicación del motor (3306 MySQL, 5432 PostgreSQL)</div>
+                    <div class="drag-item" draggable="true" data-correct="user">Usuario con acceso a la base de datos (root, admin, app_user)</div>
+                    <div class="drag-item" draggable="true" data-correct="password">Contraseña del usuario para autenticarse</div>
+                    <div class="drag-item" draggable="true" data-correct="database">Nombre de la base de datos a usar (tienda_db, usuarios_db)</div>
+                    <div class="drag-item" draggable="true" data-correct="driver">Librería que traduce órdenes al lenguaje de la BD</div>
+                    <div class="drag-item" draggable="true" data-correct="pool">Conjunto de conexiones reutilizables para mejor rendimiento</div>
+                    <div class="drag-item" draggable="true" data-correct="charset">Codificación de caracteres (utf8mb4, utf8)</div>
                 </div>
                 
                 <div class="drop-zones">
                     <div class="drop-zone" data-expected="host">
                         <h3>🏠 host</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Servidor donde corre la base de datos (localhost, 192.168.1.10)</p>
                     </div>
                     <div class="drop-zone" data-expected="port">
                         <h3>🔢 port</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Puerto de comunicación (3306 para MySQL, 5432 para PostgreSQL)</p>
                     </div>
                     <div class="drop-zone" data-expected="user">
                         <h3>👤 user</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Usuario con acceso a la base de datos (root, admin, app_user)</p>
                     </div>
                     <div class="drop-zone" data-expected="password">
                         <h3>🔐 password</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Contraseña del usuario para autenticarse</p>
                     </div>
                     <div class="drop-zone" data-expected="database">
                         <h3>📦 database</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Nombre de la base de datos a usar (tienda_db, usuarios_db)</p>
                     </div>
                     <div class="drop-zone" data-expected="driver">
                         <h3>📚 driver</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Librería que traduce órdenes al lenguaje de la BD (mysql2, pg, psycopg2)</p>
                     </div>
                     <div class="drop-zone" data-expected="pool">
                         <h3>♻️ pool</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Conjunto de conexiones reutilizables para mejor rendimiento</p>
                     </div>
                     <div class="drop-zone" data-expected="charset">
                         <h3>🔤 charset</h3>
                         <div class="drop-area"></div>
-                        <p class="zone-desc">Codificación de caracteres (utf8mb4, utf8)</p>
                     </div>
                 </div>
             </div>
             
             <div class="activity-feedback">
                 <div class="feedback-header">
-                    <span>✅ Parámetros colocados correctamente:</span>
+                    <span>✅ Descripciones colocadas correctamente:</span>
                     <strong><span id="drag-correct-count">0</span> / <span id="drag-total-count">8</span></strong>
                 </div>
                 <div id="drag-errors" class="errors-list"></div>

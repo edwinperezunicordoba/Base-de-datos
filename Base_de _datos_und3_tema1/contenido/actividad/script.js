@@ -324,7 +324,7 @@ function showDragError(itemText, expected) {
     const errorsDiv = document.getElementById('drag-errors');
     const errorMsg = document.createElement('div');
     errorMsg.className = 'error-item';
-    errorMsg.textContent = `❌ "${itemText}" debe ir en "${expected}", no en "${expected}"`;
+    errorMsg.textContent = `❌ Esa descripción pertenece al parámetro "${correctType}", no a "${expected}"`;
     errorsDiv.appendChild(errorMsg);
     setTimeout(() => {
         errorMsg.remove();
@@ -342,11 +342,11 @@ function updateDragCounters() {
     
     const errorsDiv = document.getElementById('drag-errors');
     if(correctCount === total && total > 0) {
-        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Excelente! Todos los parámetros están correctamente clasificados.</div>';
+        errorsDiv.innerHTML = '<div class="error-item">🎉 ¡Excelente! Todas las descripciones están correctamente clasificadas.</div>';
     } else {
         const pending = total - correctCount;
         if(pending > 0 && pending !== total) {
-            errorsDiv.innerHTML = `<div class="error-item">📌 Faltan colocar ${pending} parámetro(s) correctamente.</div>`;
+            errorsDiv.innerHTML = `<div class="error-item">📌 Faltan colocar ${pending} descripción(es) correctamente.</div>`;
         }
     }
 }
