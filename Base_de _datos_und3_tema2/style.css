@@ -526,8 +526,6 @@ header p {
 .matching-item.correct {
     animation: pulse 0.5s ease;
 }
-    z-index: 10;
-}
 
 /* En dispositivos móviles, mostrar siempre el botón */
 @media (max-width: 768px) {
@@ -1338,4 +1336,21 @@ header p {
 
 .activity-feedback {
   min-height: 1.5rem;
+}
+/* Sidebar Styles */
+.sidebar-link {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+.sidebar-link.active, .sidebar-link:hover {
+    background-color: #e6f4ea;
+    color: #166534; /* green-800 */
+    border-left-color: #22c55e; /* green-500 */
+}
+.content-pane {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+.content-pane.active {
+    display: block;
 }
