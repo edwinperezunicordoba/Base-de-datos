@@ -33,7 +33,7 @@
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: var(--gray-50);
     color: var(--gray-800);
     min-height: 100vh;
@@ -131,7 +131,7 @@ p  { color: var(--gray-600); line-height: 1.6; margin-bottom: 8px; }
     display: flex; align-items: center; justify-content: center;
     background: var(--white);
     border: 1px solid var(--gray-200);
-    font-family: 'Fira Code', monospace;
+    font-family: 'Poppins', sans-serif;
     font-weight: 600; font-size: .82rem;
     cursor: pointer;
     border-radius: 4px;
@@ -171,7 +171,7 @@ p  { color: var(--gray-600); line-height: 1.6; margin-bottom: 8px; }
     padding: 5px 14px;
     border-radius: 20px;
     transition: all .3s;
-    font-family: 'Fira Code', monospace;
+    font-family: 'Poppins', sans-serif;
 }
 .word-list li.found {
     background: linear-gradient(135deg, var(--red-dark), var(--red-main));
@@ -301,7 +301,7 @@ p  { color: var(--gray-600); line-height: 1.6; margin-bottom: 8px; }
     font-weight: 700; font-size: .95rem;
     box-shadow: var(--shadow-sm);
     transition: transform .2s, box-shadow .2s;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 .reset-btn:hover  { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .reset-btn:active { transform: translateY(0); }
