@@ -29,7 +29,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
     background: var(--verde-muy-claro);
@@ -991,7 +991,7 @@ header p {
 }
 .article h2 {
   margin: 0 0 18px 0;
-  font-family: "Bebas Neue", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 1.9rem;
   letter-spacing: 0.06em;
   color: var(--title-color);
