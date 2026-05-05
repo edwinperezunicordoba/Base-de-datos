@@ -1,6 +1,7 @@
 /* ========== ESTILOS ESPECÍFICOS PARA LA EVALUACIÓN ========== */
 
-.exam-card {
+.container {
+    font-family: "Poppins", sans-serif;
 }
 
 .exam-card h2 {
