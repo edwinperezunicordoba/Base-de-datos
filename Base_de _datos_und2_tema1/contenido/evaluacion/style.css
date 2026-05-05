@@ -1,5 +1,7 @@
 /* ========== ESTILOS ESPECÍFICOS PARA LA EVALUACIÓN ========== */
-
+body {
+    font-family: 'Poppins', sans-serif;
+}
 .exam-card h2 {
     color: #22c55e;
     border-bottom-color: #22c55e;
