@@ -153,7 +153,7 @@ p { color: var(--gray-600); line-height: 1.6; margin-bottom: 8px; }
     justify-content: center;
     background: var(--white);
     border: 1px solid var(--gray-200);
-    font-family: 'Fira Code', monospace;
+    font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: .82rem;
     cursor: pointer;
@@ -196,7 +196,7 @@ p { color: var(--gray-600); line-height: 1.6; margin-bottom: 8px; }
     padding: 5px 14px;
     border-radius: 20px;
     transition: all .3s;
-    font-family: 'Fira Code', monospace;
+    font-family: 'Poppins', sans-serif;
 }
 .word-list li.found {
     background: linear-gradient(135deg, var(--green-dark), var(--green-main));
@@ -398,7 +398,7 @@ p { color: var(--gray-600); line-height: 1.6; margin-bottom: 8px; }
     font-size: .95rem;
     box-shadow: var(--shadow-sm);
     transition: transform .2s, box-shadow .2s;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 .reset-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .reset-btn:active { transform: translateY(0); }
