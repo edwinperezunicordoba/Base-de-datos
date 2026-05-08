@@ -1,3 +1,6 @@
+.content-pane {
+    font-family: 'Poppins', sans-serif;
+}
 .image-modal {
             display: none;
             position: fixed;
