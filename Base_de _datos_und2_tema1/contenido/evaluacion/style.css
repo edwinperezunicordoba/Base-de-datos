@@ -3,8 +3,8 @@
     font-family: "Poppins", sans-serif;
 }
 .exam-card h2 {
-    color: #22c55e;
-    border-bottom-color: #22c55e;
+    color: #166534;
+    border-bottom-color: #166534;
 }
 
 .exam-card .question {
@@ -12,7 +12,7 @@
     padding: 20px;
     margin: 20px 0;
     border-radius: 12px;
-    border-left: 4px solid #22c55e;
+    border-left: 4px solid #166534;
     transition: all 0.3s;
 }
 
@@ -52,7 +52,7 @@
 .exam-card input[type="radio"] {
     margin-right: 10px;
     cursor: pointer;
-    accent-color: #22c55e;
+    accent-color: #166534;
 }
 
 .exam-actions {
@@ -64,7 +64,7 @@
 }
 
 .submit-exam-btn {
-    background: linear-gradient(135deg, #22c55e 0%, #22c55e 100%);
+    background: linear-gradient(135deg, #166534 0%, #166534 100%);
     color: white;
     border: none;
     padding: 14px 35px;
@@ -108,7 +108,7 @@
 }
 
 .results-header h3 {
-    color: #22c55e;
+    color: #166534;
     margin-bottom: 20px;
     font-size: 1.5rem;
 }
@@ -117,7 +117,7 @@
     margin: 20px auto;
     width: 120px;
     height: 120px;
-    background: linear-gradient(135deg, #22c55e 0%, #22c55e 100%);
+    background: linear-gradient(135deg, #166534 0%, #166534 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
