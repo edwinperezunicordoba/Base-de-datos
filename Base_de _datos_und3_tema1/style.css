@@ -1,6 +1,7 @@
-body {
+html, body {
     font-family: 'Poppins', sans-serif;
 }
+
 /* Desktop sidebar fixed positioning */
 aside.w-64 {
     position: fixed;
